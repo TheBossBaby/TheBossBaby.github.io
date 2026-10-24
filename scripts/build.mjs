@@ -126,7 +126,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
       if (errors.length) throw Object.assign(new Error(`Data validation failed:\n  - ${errors.join('\n  - ')}`), { validation: true });
       console.log('Data is valid.');
     } else {
-      build();
+      build({ dev: process.argv.includes('--dev') });
     }
   } catch (e) {
     console.error(e.validation ? e.message : e);
