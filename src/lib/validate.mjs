@@ -80,7 +80,13 @@ export function validate({ site, projects, career }, root) {
   if ((projects || []).filter((p) => p.featured).length > 1) err('projects.json', 'only one project can be "featured"');
 
   // career.json
-  need(career, ['skills', 'experience', 'education', 'achievements'], 'career.json');
+  need(career, ['profile', 'coreSkills', 'skills', 'experience', 'education', 'achievements'], 'career.json');
+  (career.experience || []).forEach((j, i) => {
+    const where = `career.json experience[${i}] "${j.org || '?'}"`;
+    need(j, ['role', 'org', 'period', 'summary', 'headline'], where);
+    if (!j.points?.length && !j.groups?.length) err(where, 'needs "points" or "groups"');
+  });
+  if ((career.experience || []).filter((j) => j.current).length > 1) err('career.json', 'only one role can be "current"');
   (career.testimonials || []).forEach((t, i) => {
     need(t, ['name', 'title', 'pull', 'quote'], `career.json testimonials[${i}]`);
     if (t.url) checkUrl(t.url, `career.json testimonials[${i}]`);

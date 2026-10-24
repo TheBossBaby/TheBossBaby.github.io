@@ -32,8 +32,7 @@ function hero(ctx) {
 
 function featuredProject(ctx, p) {
   const href = ctx.url(ctx.projectPath(p));
-  const shown = p.highlights.slice(0, 4);
-  const more = p.highlights.length - shown.length;
+  const next = p.roadmap?.[0];
   return html`<article class="featured" aria-labelledby="featured-title">
     <div class="featured-media">
       ${p.video
@@ -46,24 +45,11 @@ function featuredProject(ctx, p) {
       <h3 id="featured-title" class="featured-title"><a href="${href}">${p.title}</a></h3>
       <p class="featured-tagline">${p.tagline}</p>
       <p class="featured-summary">${p.summary}</p>
-      <div class="featured-cols">
-        <div>
-          <h4 class="mini-head">${p.highlightsTitle || 'Highlights'}</h4>
-          <ul class="checklist">
-            ${shown.map((h) => html`<li>${icon('check', { size: 16 })}<span>${h}</span></li>`)}
-          </ul>
-          ${more > 0 ? html`<p class="more-note">+${more} more in the build log</p>` : ''}
-        </div>
-        ${p.roadmap?.length
-          ? html`<div>
-          <h4 class="mini-head">Next up</h4>
-          <ol class="roadmap roadmap-compact">
-            ${p.roadmap.slice(0, 3).map((r) => html`<li><span>${r}</span></li>`)}
-          </ol>
-        </div>`
-          : ''}
-      </div>
-      ${techList(p.tech)}
+      <ul class="progress-line">
+        ${p.highlights?.length ? html`<li>${icon('check', { size: 16 })}<span><strong>${p.highlights.length}</strong> features working</span></li>` : ''}
+        ${next ? html`<li>${icon('arrowRight', { size: 16 })}<span>Next up: <strong>${next}</strong></span></li>` : ''}
+      </ul>
+      ${techList(p.tech.slice(0, 5))}
       <div class="actions">
         <a class="btn btn-primary" href="${href}"><span>Read the build log</span>${icon('arrowRight', { size: 18 })}</a>
         ${p.links.slice(0, 1).map((l) => linkButton(l))}
@@ -97,47 +83,45 @@ function about(ctx) {
     <div class="about-body">
       ${sectionHead({ id: 'about', eyebrow: 'About', title: 'From Unity freelancing to Samsung, Tencent and my own Vulkan engine' })}
       <div class="prose">${site.about.map((para) => html`<p>${para}</p>`)}</div>
-      <h3 class="mini-head">Skills</h3>
-      <dl class="skills">
-        ${career.skills.map((g) => html`<div class="skill-row"><dt>${g.group}</dt><dd>${techList(g.items, g.group)}</dd></div>`)}
-      </dl>
+      <h3 class="mini-head">Core skills</h3>
+      ${techList(career.coreSkills, 'Core skills')}
+      <div class="actions">
+        <a class="btn btn-ghost" href="${ctx.url('/cv/')}"><span>Full CV and skills</span>${icon('arrowRight', { size: 18 })}</a>
+      </div>
     </div>
   </div>
 </section>`;
 }
 
-const bulletList = (points) => html`<ul class="bullets">${points.map((pt) => html`<li>${pt}</li>`)}</ul>`;
-
-function job(j) {
-  return html`<li class="${j.current ? 'timeline-item is-current' : 'timeline-item'}">
-    <div class="timeline-head">
-      <h3>${j.role} <span class="at">at ${j.org}</span></h3>
-      <p class="mono timeline-period">${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}${j.period}</p>
-    </div>
-    ${j.location ? html`<p class="timeline-location mono">${j.location}</p>` : ''}
-    <p class="timeline-summary">${j.summary}</p>
-    ${j.points?.length ? bulletList(j.points) : ''}
-    ${(j.groups || []).map((g) => html`<div class="timeline-group"><h4>${g.title}</h4>${bulletList(g.points)}</div>`)}
-  </li>`;
-}
-
+// Home shows one line per role; the CV page has every bullet.
 function experience(ctx) {
   const { career } = ctx;
   return html`<section id="experience" class="section" aria-labelledby="experience-title">
   <div class="container">
     ${sectionHead({ id: 'experience', eyebrow: 'Experience', title: 'Where I have shipped' })}
     <div class="experience">
-      <ol class="timeline">${career.experience.map(job)}</ol>
+      <ol class="roles">
+        ${career.experience.map((j) => html`<li class="${j.current ? 'role is-current' : 'role'}">
+          <p class="role-period mono">${j.period}</p>
+          <div>
+            <h3 class="role-title">${j.role} <span class="at">at ${j.org}</span>${j.current ? html` <span class="badge badge-complete">Current</span>` : ''}</h3>
+            <p class="role-headline">${j.headline}</p>
+          </div>
+        </li>`)}
+      </ol>
       <aside class="side-cards">
         <div class="panel">
           <h3 class="mini-head">Education</h3>
-          <ul class="plain">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}</span>${e.period ? html`<span class="mono small">${e.period}</span>` : ''}</li>`)}</ul>
+          <ul class="plain">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}</span></li>`)}</ul>
         </div>
         <div class="panel">
           <h3 class="mini-head">Recognition</h3>
-          <ul class="plain">${career.achievements.map((a) => html`<li><strong>${a.title}</strong><span>${a.detail}</span></li>`)}</ul>
+          <ul class="plain">${career.achievements.map((a) => html`<li><strong>${a.title}</strong></li>`)}</ul>
         </div>
       </aside>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>See the full CV</span>${icon('arrowRight', { size: 18 })}</a>
     </div>
   </div>
 </section>`;

@@ -1,4 +1,6 @@
 {
+  "profile": "Game engine programmer with 7 years of experience in C++, Unreal Engine and Unity, focused on performance profiling, optimization tooling and engine plugins. Built Unity and Unreal Engine plugins and a plug-and-play optimization toolset for an upcoming Samsung flagship device, profiled games for performance bottlenecks with RenderDoc and Nsight Graphics, and shipped mobile and Apple Vision Pro work. Experienced in OpenGL and Vulkan, and in explaining complex technical topics to cross-functional teams.",
+  "coreSkills": ["C++", "Unreal Engine 5", "Unity", "Vulkan", "OpenGL", "GLSL", "PS5 (AGC, PSSL)", "ECS", "Multithreading", "RenderDoc", "Nsight Graphics"],
   "skills": [
     { "group": "Languages", "items": ["C++", "C#", "Lua"] },
     { "group": "Graphics", "items": ["Vulkan", "OpenGL", "GLSL", "PlayStation 5 API (AGC, PSSL)", "PBR", "Deferred lighting"] },
@@ -11,6 +13,7 @@
     {
       "role": "Game Optimization Engineer",
       "org": "Samsung Electronics",
+      "headline": "Unity and Unreal optimization plugins and tooling for an upcoming Samsung flagship. A binary IPC protocol cut bandwidth by 32%, and I co-authored a patent application.",
       "location": "Staines, UK",
       "start": "2025-07",
       "end": "",
@@ -28,6 +31,7 @@
     {
       "role": "Game Client Development Intern",
       "org": "Tencent",
+      "headline": "Unreal Engine 5 rendering and UI for Apple Vision Pro. Passing ASTC textures to the native visionOS renderer cut VRAM use by 40%.",
       "location": "London, UK",
       "start": "2024-09",
       "end": "2025-07",
@@ -44,6 +48,7 @@
     {
       "role": "Software Developer (Unreal Engine)",
       "org": "Pole To Win",
+      "headline": "A C++ engine with Lua scripting and its own input, debugger and profiler modules, plus gameplay systems for an Android multiplayer RTS in Unreal.",
       "location": "Hyderabad, India",
       "start": "2021-03",
       "end": "2023-09",
@@ -78,7 +83,8 @@
     },
     {
       "role": "Freelance Game Developer (Unity)",
-      "org": "Self-employed",
+      "org": "Upwork",
+      "headline": "Unity games for international clients, with gameplay mechanics and third-party SDK integrations.",
       "location": "Bhopal, India",
       "start": "2018-12",
       "end": "2021-02",

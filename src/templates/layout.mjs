@@ -7,6 +7,7 @@ const NAV = [
   { label: 'About', hash: 'about' },
   { label: 'Experience', hash: 'experience' },
   { label: 'Contact', hash: 'contact' },
+  { label: 'CV', href: '/cv/' },
 ];
 
 const FONTS_URL =
@@ -58,7 +59,15 @@ function head(ctx, page) {
 </head>`;
 }
 
-function header(ctx) {
+function navLink(ctx, item, page) {
+  if (item.href) {
+    const current = page.path === item.href;
+    return html`<li><a href="${ctx.url(item.href)}" ${current ? html`aria-current="page"` : ''}>${item.label}</a></li>`;
+  }
+  return html`<li><a href="${ctx.url('/')}#${item.hash}" data-nav-link="${item.hash}">${item.label}</a></li>`;
+}
+
+function header(ctx, page) {
   const { site } = ctx;
   return html`<header class="site-header" data-header>
   <div class="container header-inner">
@@ -73,7 +82,7 @@ function header(ctx) {
     </button>
     <nav class="site-nav" id="site-nav" aria-label="Primary" data-nav>
       <ul>
-        ${NAV.map((item) => html`<li><a href="${ctx.url('/')}#${item.hash}" data-nav-link="${item.hash}">${item.label}</a></li>`)}
+        ${NAV.map((item) => navLink(ctx, item, page))}
       </ul>
       <a class="btn btn-small btn-primary" href="mailto:${site.email}">${icon('mail', { size: 16 })}<span>Email me</span></a>
     </nav>
@@ -105,7 +114,7 @@ ${html`<html lang="${ctx.site.lang}" class="no-js">
 ${head(ctx, page)}
 <body class="${page.bodyClass || ''}" id="top">
 <a class="skip-link" href="#main">Skip to content</a>
-${header(ctx)}
+${header(ctx, page)}
 <main id="main" tabindex="-1">
 ${page.main}
 </main>

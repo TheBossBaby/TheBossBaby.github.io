@@ -22,7 +22,7 @@ Content, presentation and behaviour are kept apart. To change what the site *say
 data/                 ← CONTENT: edit these
   site.json           name, role, bio, contact, socials, SEO text
   projects.json       every project, in display order
-  career.json         skills, experience, education, awards, testimonials
+  career.json         CV profile, core skills, skills, experience, education, awards, testimonials
 assets/img/           images referenced from data (WebP)
 static/               files copied to the site root as-is (favicon, icons)
 
@@ -30,6 +30,7 @@ src/templates/        PRESENTATION: HTML generated from data
   layout.mjs          <head>, SEO meta, header, footer
   home.mjs            home page sections
   project.mjs         project detail page and 404
+  cv.mjs              full CV page at /cv/ (prints to PDF)
   components.mjs      cards, badges, images, buttons
   seo.mjs             schema.org JSON-LD
   icons.mjs           inline SVG icons
@@ -46,6 +47,8 @@ PORTFOLIO_UPDATE.md   how to update Project V after each engine PR
 ```
 
 ## Common edits
+
+**Home page vs CV page.** The home page stays short on purpose. About shows the two `about` paragraphs from `site.json` and the `coreSkills` row. Experience shows one line per role, taken from each role's `headline`. Everything else in `career.json` (`profile`, every bullet in `points` and `groups`, all skill groups) appears only on `/cv/`. That page has a "Save as PDF" button that uses a print stylesheet tuned for A4.
 
 **Add a project.** Add an object to `data/projects.json`. Copy an existing entry as a template. The order in the file is the order on the page. Exactly one project can have `"featured": true`; it gets the large card at the top.
 
