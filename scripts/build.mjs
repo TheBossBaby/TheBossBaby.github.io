@@ -56,6 +56,7 @@ export function build({ dev = false, quiet = false } = {}) {
     'css/main.css': join(ROOT, 'src/styles/main.css'),
     'js/main.js': join(ROOT, 'src/scripts/main.js'),
     'js/hero.js': join(ROOT, 'src/scripts/hero.js'),
+    'js/analytics.js': join(ROOT, 'src/scripts/analytics.js'),
   };
   const assetVersions = {};
   rmSync(DIST, { recursive: true, force: true });

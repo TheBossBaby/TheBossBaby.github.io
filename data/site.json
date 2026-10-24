@@ -49,5 +49,9 @@
     "ogImageAlt": "Stylized low-poly forest scene rendered in a custom OpenGL renderer",
     "twitterHandle": "",
     "knowsAbout": ["Game engine programming", "Graphics programming", "Real-time rendering", "Vulkan", "OpenGL", "GLSL", "PlayStation 5", "Physically based rendering", "Deferred rendering", "GPU profiling", "C++", "Unreal Engine", "Unity", "Apple Vision Pro"]
+  },
+  "analytics": {
+    "gaMeasurementId": "",
+    "bannerText": "I use Google Analytics to see which projects people look at. It only sets cookies if you accept. No ads and no cross-site tracking."
   }
 }

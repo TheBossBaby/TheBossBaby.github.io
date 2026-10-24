@@ -120,6 +120,33 @@ For a custom domain, add a `static/CNAME` file containing the domain, configure 
 
 After the first deploy, add the site to Google Search Console and submit `sitemap.xml`. Then add the new URL to LinkedIn, GitHub and your CV, and redirect or retire the Wix site so the two don't compete in search.
 
+## Analytics
+
+The site supports Google Analytics 4. It ships with no analytics code until a measurement ID is set.
+
+**Turn it on**
+
+1. In [Google Analytics](https://analytics.google.com), open **Admin → Create → Property**, then add a **Web** data stream for `https://thebossbaby.github.io`.
+2. Copy the stream's **Measurement ID**. It looks like `G-XXXXXXXXXX`. The old `UA-128634648-1` ID from the previous site belongs to Universal Analytics, which Google shut down in 2023, so it no longer collects data.
+3. Put the ID in `analytics.gaMeasurementId` in `data/site.json` and push to `main`.
+4. Optional: in the data stream, keep **Enhanced measurement** on for scroll depth and outbound clicks. Mark `contact_email` as a key event so recruiters' emails show up as conversions.
+
+**How consent works.** Nothing is requested from Google and no cookie is set until a visitor clicks **Accept** on the banner, as UK GDPR and PECR require. The choice is stored in `localStorage` and can be changed from **Cookie settings** in the footer. Declining after accepting stops collection and clears the `_ga` cookies. Browsers that send Global Privacy Control are treated as declining and don't see the banner. Google signals and ad personalisation are switched off.
+
+**Events sent after consent**
+
+| Event | When |
+| --- | --- |
+| `page_view` | Every page load (automatic). |
+| `contact_email` | A click on any email link. |
+| `copy_email` | The Copy button next to the email address. |
+| `github_click` | A click on any GitHub link, with the URL. |
+| `cv_save_pdf` | "Save as PDF" on the CV page. |
+| `video_unmute` | A visitor unmutes a project video. Autoplaying muted clips are not counted. |
+| `video_play` | A video that doesn't autoplay is played. |
+
+The logic is in `src/scripts/analytics.js`, the markup in `src/templates/analytics.mjs`, and the banner text in `data/site.json`.
+
 ## Performance and accessibility
 
 - No framework and no runtime dependencies. Each page loads one stylesheet and one or two small scripts.
