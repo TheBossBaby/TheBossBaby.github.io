@@ -234,8 +234,8 @@ main:focus { outline: none; }
   padding-top: calc(var(--header-h) + clamp(48px, 8vw, 96px));
   /* Fallback when WebGL is unavailable */
   background:
-    radial-gradient(circle at 74% 52%, #000 0 70px, rgb(255 138 61 / 0.55) 74px, transparent 96px),
-    radial-gradient(ellipse 60% 45% at 74% 52%, rgb(255 138 61 / 0.12), transparent 70%),
+    radial-gradient(circle at 74% 52%, #ffd9ad 0 3px, #ff8a3d 16px, #7a2f6b 46px, #1a1030 76px, rgb(200 214 255 / 0.75) 80px, rgb(130 150 230 / 0.18) 86px, transparent 124px),
+    radial-gradient(ellipse 60% 45% at 74% 52%, rgb(124 150 255 / 0.08), transparent 70%),
     var(--bg);
 }
 .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; opacity: 0; transition: opacity 1.2s var(--ease); }
@@ -247,7 +247,7 @@ main:focus { outline: none; }
     linear-gradient(0deg, var(--bg) 0%, transparent 22%);
 }
 @media (max-width: 859.98px) {
-  .hero { background: radial-gradient(circle at 90% 7%, #000 0 40px, rgb(255 138 61 / 0.5) 43px, transparent 60px), var(--bg); }
+  .hero { background: radial-gradient(circle at 90% 7%, #ffd9ad 0 2px, #ff8a3d 9px, #7a2f6b 26px, #1a1030 42px, rgb(200 214 255 / 0.7) 45px, transparent 66px), var(--bg); }
   .hero-scrim { background: linear-gradient(180deg, rgb(10 11 16 / 0.1) 0%, rgb(10 11 16 / 0.82) 34%, var(--bg) 100%); }
 }
 .hero-inner { position: relative; }
@@ -302,6 +302,7 @@ main:focus { outline: none; }
 .featured-media { position: relative; display: block; background: #000; min-height: 240px; }
 .featured-media { display: grid; place-items: center; }
 .featured-media img { width: 100%; height: 100%; object-fit: contain; }
+.featured-media .video-frame { width: 100%; }
 @media (min-width: 1000px) { .featured-media { border-right: 1px solid var(--border); } }
 .featured-flag {
   position: absolute; left: 16px; top: 16px;
@@ -349,7 +350,17 @@ main:focus { outline: none; }
 }
 .card:hover { transform: translateY(-4px); border-color: var(--border-strong); box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7); }
 .card:has(.card-link:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
-.card-media { aspect-ratio: 16 / 9; overflow: hidden; background: #000; border-bottom: 1px solid var(--border); }
+.card-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #000; border-bottom: 1px solid var(--border); }
+.card-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.35s var(--ease); pointer-events: none; }
+.card.is-playing .card-preview { opacity: 1; }
+.media-badge {
+  position: absolute; left: 12px; top: 12px; z-index: 2; pointer-events: none;
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px;
+  font-size: 0.7rem; color: var(--text); background: rgb(10 11 16 / 0.78); border: 1px solid var(--border-strong);
+  backdrop-filter: blur(6px); transition: opacity 0.3s;
+}
+.media-badge .icon { fill: currentColor; stroke: none; }
+.card.is-playing .media-badge { opacity: 0; }
 .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
 .card:hover .card-media img { transform: scale(1.045); }
 .card-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
@@ -396,7 +407,13 @@ main:focus { outline: none; }
 .timeline-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; align-items: baseline; }
 .timeline-head h3 { font-size: var(--step-1); }
 .timeline-head .at { color: var(--text-muted); font-weight: 500; }
-.timeline-period { color: var(--text-dim); }
+.timeline-period { color: var(--text-dim); display: inline-flex; align-items: center; gap: 10px; }
+.timeline-location { color: var(--text-dim); margin-top: 2px; }
+.timeline-item.is-current::before { background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+.timeline-group { margin-top: 20px; }
+.timeline-group h4 { font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-strong); }
+.timeline-group .bullets { margin-top: 8px; }
+.plain .mono { color: var(--text-dim); font-size: 0.78rem; }
 .timeline-summary { margin-top: 8px; color: var(--text); }
 .bullets { margin-top: 12px; padding-left: 1.1em; display: grid; gap: 8px; color: var(--text-muted); }
 .bullets li::marker { color: var(--accent); }
@@ -488,8 +505,10 @@ main:focus { outline: none; }
 .project-title { font-size: var(--step-4); font-weight: 700; letter-spacing: -0.035em; }
 .project-tagline { margin-top: 18px; font-size: var(--step-1); color: var(--text-muted); line-height: 1.5; }
 .update-note { margin-top: 14px; color: var(--wip); }
-.project-hero-media, .video { margin: 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); background: #000; }
-.project-hero-media img, .video img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.project-hero-media { margin: 0; }
+.project-hero-media > img, .project-hero-media > .video-frame, .video { width: 100%; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); background: #000; }
+.project-hero-media > img, .video img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.media-caption { margin-top: 12px; color: var(--text-dim); font-size: var(--step--1); }
 .video { position: relative; aspect-ratio: 16 / 9; }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .video-play { position: absolute; inset: 0; display: grid; place-items: center; background: rgb(0 0 0 / 0.25); border: 0; cursor: pointer; }
@@ -546,3 +565,18 @@ main:focus { outline: none; }
   .site-header, .hero-canvas, .hero-scrim, .site-footer, .nav-toggle { display: none !important; }
   body { background: #fff; color: #000; }
 }
+
+/* ---------- Video ---------- */
+.video-frame { position: relative; overflow: hidden; background: #000; }
+.video-frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* Hide captured window chrome: the frame's aspect ratio excludes the cropped rows. */
+.video-crop video { object-position: center bottom; }
+
+/* ---------- Metrics ---------- */
+.metrics {
+  display: grid; gap: 16px 28px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin: 32px 0 0; padding-top: 22px; border-top: 1px solid var(--border); max-width: 760px;
+}
+.metric { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
+.metric dd { margin: 0; font-size: var(--step-3); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--accent-strong); }
+.metric dt { color: var(--text-dim); font-size: var(--step--1); line-height: 1.35; }

@@ -1,7 +1,15 @@
-// Hero background: a small WebGL1 fragment shader that fakes gravitational
-// lensing of a starfield around a black hole, a sketch of where Project V is
-// heading. It pauses off-screen, renders one still frame for reduced motion,
-// and leaves the CSS gradient fallback in place if WebGL is unavailable.
+// Hero background: a WebGL1 fragment shader sketching an Interstellar-style
+// wormhole, a spherical mouth that connects two distant points in space.
+//
+//  - Outside the mouth we see OUR sky (cool, sparse stars and a faint galactic
+//    band). Light passing close to the throat is bent, so the local sky is
+//    lensed into an Einstein ring around the rim.
+//  - Inside the mouth we see the OTHER END: a different region of space with a
+//    warm spiral galaxy. The whole far sky is compressed towards the rim, the
+//    way a wormhole squeezes an entire hemisphere into a sphere.
+//
+// It pauses off-screen and in background tabs, draws one still frame for
+// reduced motion, and leaves the CSS gradient fallback in place without WebGL.
 (() => {
   'use strict';
   const canvas = document.querySelector('[data-hero-canvas]');
@@ -14,12 +22,27 @@
   const FRAG = `
 precision highp float;
 uniform vec2 uRes;
-uniform vec2 uCenter;   // lens centre in pixels
-uniform float uRadius;  // horizon radius in pixels
+uniform vec2 uCenter;   // wormhole mouth centre, pixels
+uniform float uRadius;  // mouth radius, pixels
 uniform float uTime;
 uniform vec2 uTilt;     // pointer parallax, -1..1
 
+const float PI = 3.14159265;
+
 float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+
+float noise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+             mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+float fbm(vec2 p) {
+  float v = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++) { v += a * noise(p); p = p * 2.03 + 17.1; a *= 0.5; }
+  return v;
+}
 
 float stars(vec2 p, float scale, float density) {
   vec2 g = p * scale;
@@ -33,40 +56,80 @@ float stars(vec2 p, float scale, float density) {
   return on * tw * (1.0 - smoothstep(0.0, 0.09, d)) * (0.4 + 0.6 * hash(id + 3.3));
 }
 
+// Our side of the wormhole: cool, sparse, with a faint galactic band.
+vec3 localSky(vec2 q) {
+  vec3 c = vec3(0.0);
+  c += stars(q, 26.0, 0.10) * vec3(0.92, 0.95, 1.0);
+  c += stars(q + 3.1, 48.0, 0.12) * vec3(0.72, 0.82, 1.0) * 0.8;
+  c += stars(q + 7.7, 90.0, 0.16) * vec3(0.85, 0.88, 1.0) * 0.5;
+  float band = exp(-pow((q.y + q.x * 0.4 + 0.08) / 0.2, 2.0));
+  c += vec3(0.08, 0.10, 0.20) * band * fbm(q * 3.0 + 2.0) * 1.2;
+  c += stars(q + 1.3, 160.0, 0.30) * band * 0.5;
+  return c;
+}
+
+// The far side: another region of space, dominated by a warm spiral galaxy.
+vec3 remoteSky(vec2 u) {
+  vec3 c = vec3(0.025, 0.012, 0.04);
+  c += vec3(0.30, 0.10, 0.38) * pow(fbm(u * 1.6 + 5.0), 2.2) * 0.9;   // nebula
+  vec2 g = u - vec2(0.03, -0.02);
+  float ca = cos(0.55), sa = sin(0.55);
+  g = vec2(ca * g.x - sa * g.y, sa * g.x + ca * g.y);
+  g.y *= 2.1;                                                          // inclined disk
+  float r = length(g);
+  float a = atan(g.y, g.x);
+  float arms = 0.5 + 0.5 * cos(2.0 * (a - log(r + 0.02) * 2.4) - uTime * 0.12);
+  float disk = exp(-r * 2.7);
+  c += vec3(1.0, 0.58, 0.28) * disk * (0.25 + 0.75 * arms) * (0.55 + 0.7 * fbm(g * 7.0));
+  c += vec3(1.0, 0.86, 0.62) * exp(-r * r * 140.0) * 1.5;             // bright core
+  c += stars(u, 34.0, 0.20) * vec3(1.0, 0.9, 0.8);
+  c += stars(u + 2.0, 80.0, 0.28) * vec3(1.0, 0.8, 0.7) * 0.7;
+  return c;
+}
+
 void main() {
   float unit = uRes.y;
   vec2 p = (gl_FragCoord.xy - uCenter) / unit;
-  float rs = uRadius / unit;
+  float R = uRadius / unit;
   float r = length(p);
   vec2 dir = p / max(r, 1e-4);
+  vec2 drift = uTilt * 0.02 + vec2(uTime * 0.004, 0.0);
 
-  // Deflect the sample point towards the lens: strong near the photon sphere, fading with distance.
-  float bend = (rs * rs * 2.2) / max(r - rs * 0.2, rs * 0.6);
-  vec2 q = p - dir * bend;
-  q += uTilt * 0.02 + vec2(uTime * 0.004, 0.0);
+  vec3 outside = vec3(0.0);
+  vec3 inside = vec3(0.0);
 
-  vec3 col = vec3(0.0);
-  col += stars(q, 26.0, 0.10) * vec3(0.95, 0.93, 1.0);
-  col += stars(q + 3.1, 48.0, 0.12) * vec3(0.75, 0.82, 1.0) * 0.8;
-  col += stars(q + 7.7, 90.0, 0.16) * vec3(1.0, 0.85, 0.75) * 0.55;
+  if (r > R * 0.97) {
+    // Thin-lens mapping: the image at radius r comes from source radius r - k*R^2/r.
+    // At the rim the source collapses to the point behind the mouth -> Einstein ring.
+    float src = r - 0.92 * R * R / r;
+    outside = localSky(dir * src + drift);
+    // Tangential stretching near the ring brightens the lensed stars slightly.
+    outside *= 1.0 + 0.6 * exp(-pow((r - R) / (R * 0.18), 2.0));
+  }
 
-  // Faint nebula tint.
-  col += vec3(0.05, 0.03, 0.09) * (1.0 - smoothstep(0.0, 1.4, length(p + vec2(0.35, 0.15))));
+  if (r < R * 1.03) {
+    // Fisheye into the far side: the far sky's angular radius runs to infinity at the rim.
+    float s = clamp(r / R, 0.0, 0.999);
+    float far = tan(s * PI * 0.48) * 0.32;
+    // The far side turns slowly instead of drifting, so its galaxy always stays in view.
+    float ang = uTime * 0.02;
+    vec2 v = dir * far;
+    v = vec2(cos(ang) * v.x - sin(ang) * v.y, sin(ang) * v.x + cos(ang) * v.y);
+    inside = remoteSky(v - uTilt * 0.04);
+    // Treat the mouth as a glassy sphere: soft limb darkening plus a faint highlight.
+    float z = sqrt(max(0.0, 1.0 - s * s));
+    inside *= 0.55 + 0.45 * z;
+    vec3 n = vec3(p / R, z);
+    float spec = pow(max(dot(n, normalize(vec3(-0.45, 0.55, 0.7))), 0.0), 48.0);
+    inside += vec3(0.85, 0.9, 1.0) * spec * 0.22;
+  }
 
-  // Thin accretion disk seen almost edge-on, lensed over the top of the hole.
-  float tilt = -0.32;
-  vec2 dp = vec2(p.x * cos(tilt) - p.y * sin(tilt), p.x * sin(tilt) + p.y * cos(tilt));
-  float disk = exp(-pow(dp.y / (rs * 0.08), 2.0)) * (1.0 - smoothstep(rs * 1.6, rs * 5.5, abs(dp.x))) * step(rs * 1.05, r);
-  float swirl = 0.75 + 0.25 * sin(dp.x / rs * 6.0 - uTime * 1.6);
-  col += vec3(1.0, 0.52, 0.2) * disk * swirl * 0.9;
+  float edge = smoothstep(R * 0.985, R * 1.015, r);
+  vec3 col = mix(inside, outside, edge);
 
-  // Photon ring and soft glow.
-  float ring = exp(-pow((r - rs * 1.32) / (rs * 0.07), 2.0));
-  float glow = exp(-pow((r - rs * 1.3) / (rs * 0.9), 2.0));
-  col += vec3(1.0, 0.6, 0.28) * ring * 1.15 + vec3(1.0, 0.45, 0.18) * glow * 0.16;
-
-  // Event horizon.
-  col *= smoothstep(rs * 0.98, rs * 1.06, r);
+  // Rim: the thin, bright ring of light skimming the throat.
+  col += vec3(0.78, 0.84, 1.0) * exp(-pow((r - R) / (R * 0.02), 2.0)) * 0.28;
+  col += vec3(0.45, 0.52, 0.85) * exp(-pow((r - R) / (R * 0.22), 2.0)) * 0.07;
 
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -105,18 +168,18 @@ void main() {
 
   function resize() {
     // Cap the backing resolution: the effect is soft, so full DPR is wasted fill-rate.
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const dpr = Math.min(devicePixelRatio || 1, 1.25);
     const w = Math.max(1, Math.round(canvas.clientWidth * dpr));
     const h = Math.max(1, Math.round(canvas.clientHeight * dpr));
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
     gl.viewport(0, 0, w, h);
     const wide = canvas.clientWidth >= 860;
-    // Lens sits right of the copy on desktop, top-right on mobile (y is bottom-up in GL).
-    const cx = wide ? 0.74 : 0.9;
-    const cy = wide ? 0.48 : 0.93;
+    // Mouth sits right of the copy on desktop, top-right on mobile (y is bottom-up in GL).
+    const cx = wide ? 0.74 : 0.86;
+    const cy = wide ? 0.5 : 0.9;
     gl.uniform2f(u.uRes, w, h);
     gl.uniform2f(u.uCenter, w * cx, h * cy);
-    gl.uniform1f(u.uRadius, Math.min(w, h) * (wide ? 0.085 : 0.07));
+    gl.uniform1f(u.uRadius, Math.min(w, h) * (wide ? 0.16 : 0.09));
   }
 
   function frame(now) {

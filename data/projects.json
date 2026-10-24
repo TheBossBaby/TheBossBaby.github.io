@@ -10,7 +10,7 @@
     "year": "2026",
     "category": "Game engine",
     "role": "Solo developer",
-    "platforms": ["Windows", "Linux", "macOS"],
+    "platforms": ["Windows"],
     "tagline": "A C++20 game engine with a hand-written Vulkan 1.3 renderer.",
     "summary": "Built from scratch as the foundation for rendering an Interstellar-style wormhole and skybox.",
     "overview": [
@@ -27,7 +27,7 @@
       "Frames in flight with fence and semaphore synchronisation"
     ],
     "knownIssues": [
-      "No depth buffer yet, so back faces can draw over front faces (visible in the current render).",
+      "No depth buffer yet, so back faces can draw over front faces (visible in the current clip).",
       "Vertex and index buffers are host-visible and not yet staged into device-local memory.",
       "Swapchain resize isn't handled."
     ],
@@ -45,6 +45,17 @@
       "width": 1280,
       "height": 720,
       "alt": "Two vertex-coloured cubes rendered by the Project V Vulkan backend on a black background"
+    },
+    "video": {
+      "src": "/assets/video/project-v-720.mp4",
+      "srcSmall": "/assets/video/project-v-480.mp4",
+      "poster": "/assets/img/projects/project-v-poster.webp",
+      "width": 1280,
+      "height": 746,
+      "cropTop": 29,
+      "duration": "PT4S",
+      "uploadDate": "2026-10-24",
+      "caption": "Two cubes rotated by the ECS, each with its own MVP matrix pushed as a push constant."
     },
     "gallery": [
       {
@@ -64,7 +75,6 @@
         "alt": "C++ source for vulkanRenderer createGraphicsPipeline using shader module, pipeline layout and graphics pipeline builders"
       }
     ],
-    "video": "",
     "links": [
       { "label": "Engine", "url": "https://github.com/TheBossBaby/project-v-engine", "icon": "github" },
       { "label": "Core interfaces", "url": "https://github.com/TheBossBaby/project-v-core", "icon": "github" },
@@ -76,23 +86,29 @@
     "title": "Project T",
     "status": "complete",
     "featured": false,
-    "year": "",
-    "category": "Game",
+    "year": "2024",
+    "category": "Cross-platform renderer",
     "role": "Solo developer",
-    "platforms": ["Windows"],
-    "tagline": "A top-down Windows game built from scratch in C++ and OpenGL.",
-    "summary": "A top-down game with its own OpenGL renderer and GLSL shaders, with no engine underneath.",
+    "platforms": ["PlayStation 5", "Windows"],
+    "tagline": "A top-down game with its own rendering pipeline for PlayStation 5 and Windows.",
+    "summary": "One C++ codebase rendering through OpenGL and GLSL on Windows and the PS5 API (AGC, PSSL) on console, with deferred PBR lighting and GPU instancing.",
+    "metrics": [
+      { "value": "42%", "label": "fewer draw calls (550 to 315)" },
+      { "value": "64", "label": "GPU-instanced point lights" },
+      { "value": "2", "label": "platforms: PS5 and Windows" }
+    ],
     "overview": [
-      "A top-down game for Windows built from scratch, with no third-party engine. Rendering, game loop and gameplay are written in C++ with OpenGL and GLSL.",
+      "A top-down arena game built from scratch with no third-party engine. I engineered its rendering pipeline for both PlayStation 5 and Windows: OpenGL and GLSL on PC, and the PS5 rendering API (AGC) with PSSL shaders on console, behind one C++ codebase.",
       "The game runs a timed arena level with collectibles, obstacles and a live frame-time overlay."
     ],
     "highlightsTitle": "Highlights",
     "highlights": [
-      "Custom OpenGL renderer with hand-written GLSL shaders",
-      "In-game overlay reporting frames per second and milliseconds per frame",
-      "Around 119 FPS (8.4 ms per frame) in the arena level"
+      "Cross-platform rendering pipeline for PlayStation 5 (AGC, PSSL) and Windows (OpenGL, GLSL)",
+      "Deferred lighting added to the existing PBR system, with 64 GPU-instanced point lights and 1 directional light",
+      "Instanced repeated objects such as walls and bounce pads, cutting draw calls by 42% (550 to 315)",
+      "Graphics debugging with NVIDIA Nsight Graphics and Razor GPU"
     ],
-    "tech": ["C++", "OpenGL", "GLSL"],
+    "tech": ["C++", "OpenGL", "GLSL", "AGC", "PSSL", "Nsight Graphics", "Razor GPU"],
     "image": {
       "src": "/assets/img/projects/project-t-1600.webp",
       "srcSmall": "/assets/img/projects/project-t-800.webp",
@@ -100,31 +116,44 @@
       "height": 900,
       "alt": "Top-down view of a sandy arena with green blocks, red collectibles and a timer reading 182 seconds"
     },
+    "video": {
+      "src": "/assets/video/project-t-1080.mp4",
+      "srcSmall": "/assets/video/project-t-480.mp4",
+      "poster": "/assets/img/projects/project-t-poster.webp",
+      "width": 1920,
+      "height": 1080,
+      "duration": "PT11S",
+      "uploadDate": "2024-02-24",
+      "caption": "Gameplay capture of the arena level running at about 120 FPS."
+    },
     "gallery": [],
-    "video": "",
     "links": []
   },
   {
     "slug": "pbr-opengl",
-    "title": "PBR in OpenGL",
+    "title": "PBR Scene in OpenGL",
+    "shortTitle": "PBR in OpenGL",
     "status": "complete",
     "featured": false,
-    "year": "",
-    "category": "Rendering demo",
+    "year": "2024",
+    "category": "Rendering",
     "role": "Solo developer",
     "platforms": ["Windows"],
-    "tagline": "Physically based rendering implemented from scratch.",
-    "summary": "A physically based rendering implementation written from the ground up in C++ and OpenGL.",
+    "tagline": "A physically based, deferred rendering pipeline written from scratch.",
+    "summary": "A 3D scene built from scratch in C++ and OpenGL with PBR materials, deferred shading, multiple light types, tone mapping and gamma correction.",
     "overview": [
-      "Physically based rendering implemented from scratch in C++ and OpenGL, with no rendering library.",
-      "The scene shows a textured, reflective sphere above displaced terrain, used to test material response under different lighting."
+      "A 3D scene built from scratch in C++ and OpenGL, with a physically based rendering pipeline to raise the visual quality of the scene.",
+      "After studying the GTA V rendering pipeline write-up, I moved the renderer to deferred shading. The scene is lit by directional, spot and point lights, and Reinhard tone mapping with gamma correction produces the final image."
     ],
     "highlightsTitle": "Highlights",
     "highlights": [
-      "PBR shading written by hand in GLSL",
-      "Texture-driven material inputs"
+      "PBR pipeline written by hand in C++, OpenGL and GLSL",
+      "Deferred rendering, informed by a study of the GTA V rendering pipeline",
+      "Directional, spot and point lights",
+      "Reinhard tone mapping and gamma correction as post-processing",
+      "Graphics debugging with NVIDIA Nsight Graphics and RenderDoc"
     ],
-    "tech": ["C++", "OpenGL", "GLSL", "PBR"],
+    "tech": ["C++", "OpenGL", "GLSL", "PBR", "Deferred shading", "RenderDoc"],
     "image": {
       "src": "/assets/img/projects/pbr-opengl-1600.webp",
       "srcSmall": "/assets/img/projects/pbr-opengl-800.webp",
@@ -132,8 +161,17 @@
       "height": 900,
       "alt": "A reflective blue tiled sphere lit with physically based shading above rough brown terrain"
     },
+    "video": {
+      "src": "/assets/video/pbr-opengl-1080.mp4",
+      "srcSmall": "/assets/video/pbr-opengl-480.mp4",
+      "poster": "/assets/img/projects/pbr-opengl-poster.webp",
+      "width": 1920,
+      "height": 1080,
+      "duration": "PT12S",
+      "uploadDate": "2024-02-17",
+      "caption": "Fly-through of the PBR scene with a lit, reflective sphere over displaced terrain."
+    },
     "gallery": [],
-    "video": "",
     "links": []
   },
   {
@@ -141,21 +179,30 @@
     "title": "Stylized Scene in OpenGL",
     "status": "complete",
     "featured": false,
-    "year": "",
-    "category": "Rendering demo",
+    "year": "2023",
+    "category": "Rendering",
     "role": "Solo developer",
     "platforms": ["Windows"],
-    "tagline": "A stylized low-poly 3D scene rendered from scratch.",
-    "summary": "A 3D application that renders a stylized low-poly environment with a custom C++ and OpenGL renderer.",
+    "tagline": "A real-time stylized scene with GPU instancing, culling and cel shading.",
+    "summary": "MSc coursework at Newcastle University: a space scene and an instanced low-poly forest, with deferred lighting, post-processing and cel shading.",
+    "metrics": [
+      { "value": "74", "label": "out of 100, MSc coursework grade" },
+      { "value": "1", "label": "draw call for each instanced forest" }
+    ],
     "overview": [
-      "A 3D application built from scratch in C++ and OpenGL to render a stylized low-poly environment: a forest of trees, mountains, a building and terrain under a night sky."
+      "A real-time rendering project built for my MSc coursework at Newcastle University, in C++, OpenGL and GLSL. It opens on a space scene and moves to a stylized low-poly world with a forest, mountains and a building.",
+      "The code is structured with object-oriented design so each system stays modular. Forests are drawn with GPU instancing, and CPU-side frustum culling with sphere tests keeps off-screen objects out of the frame."
     ],
     "highlightsTitle": "Highlights",
     "highlights": [
-      "Flat-shaded, low-poly art direction",
-      "Hundreds of trees on screen at 120 FPS (8.3 ms per frame)"
+      "GPU instancing draws whole forests of trees in a single draw call",
+      "CPU frustum culling with bounding-sphere tests",
+      "Deferred rendering with specular lighting",
+      "Post-processing in GLSL: saturation, desaturation and blur",
+      "Cel shading across the scene for the stylized look",
+      "Graded 74 out of 100"
     ],
-    "tech": ["C++", "OpenGL", "GLSL"],
+    "tech": ["C++", "OpenGL", "GLSL", "GPU instancing", "Deferred shading"],
     "image": {
       "src": "/assets/img/projects/stylized-scene-1600.webp",
       "srcSmall": "/assets/img/projects/stylized-scene-800.webp",
@@ -163,8 +210,17 @@
       "height": 900,
       "alt": "A low-poly forest of dark green trees on bright grass with grey mountains and a building under a night sky"
     },
+    "video": {
+      "src": "/assets/video/stylized-scene-1080.mp4",
+      "srcSmall": "/assets/video/stylized-scene-480.mp4",
+      "poster": "/assets/img/projects/stylized-scene-poster.webp",
+      "width": 1920,
+      "height": 1080,
+      "duration": "PT18S",
+      "uploadDate": "2024-02-17",
+      "caption": "The space scene, then the stylized forest rendered with GPU instancing."
+    },
     "gallery": [],
-    "video": "",
     "links": []
   }
 ]

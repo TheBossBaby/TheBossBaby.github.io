@@ -11,9 +11,9 @@ const NAV = [
 const FONTS_URL =
   'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap';
 
-/** The site's mark: a photon ring around an event horizon, a nod to Project V's wormhole goal. */
+/** The site's mark: a wormhole mouth with a galaxy on the far side, a nod to Project V's goal. */
 export const brandMark = (size = 28) =>
-  raw(`<svg class="brand-mark" width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="16" cy="16" r="6" fill="currentColor" opacity=".18"/><ellipse cx="16" cy="16" rx="15" ry="4" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55" transform="rotate(-18 16 16)"/></svg>`);
+  raw(`<svg class="brand-mark" width="${size}" height="${size}" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2.4"/><ellipse cx="16" cy="16" rx="7.5" ry="2.8" fill="currentColor" opacity=".4" transform="rotate(-28 16 16)"/><path d="M10.6 18.4c1.6 2.4 6.4 2.9 9.1.6M21.4 13.6c-1.6-2.4-6.4-2.9-9.1-.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".75"/><circle cx="16" cy="16" r="2.2" fill="currentColor"/></svg>`);
 
 function head(ctx, page) {
   const { site } = ctx;

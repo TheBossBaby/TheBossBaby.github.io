@@ -53,7 +53,19 @@ export function validate({ site, projects, career }, root) {
     seen.add(p.slug);
     if (!['wip', 'complete'].includes(p.status)) err(where, `status must be "wip" or "complete"`);
     if (p.updated && !DATE.test(p.updated)) err(where, `updated must be YYYY-MM-DD`);
-    if (p.video && !/^[\w-]{11}$/.test(p.video)) err(where, `video must be an 11-character YouTube ID, not a URL`);
+    if (p.youtube && !/^[\w-]{11}$/.test(p.youtube)) err(where, `youtube must be an 11-character YouTube ID, not a URL`);
+    if (p.video) {
+      const w = `${where} video`;
+      if (typeof p.video !== 'object') err(w, 'must be an object with src, poster, width, height');
+      else {
+        need(p.video, ['src', 'poster', 'width', 'height', 'uploadDate'], w);
+        [p.video.src, p.video.srcSmall, p.video.poster].forEach((f) => checkFile(f, w));
+        if (p.video.src && !/\.mp4$/.test(p.video.src)) err(w, 'src must be an .mp4 file');
+        if (p.video.duration && !/^PT(\d+H)?(\d+M)?(\d+S)?$/.test(p.video.duration)) err(w, 'duration must be ISO 8601, e.g. "PT12S"');
+        if (p.video.uploadDate && !DATE.test(p.video.uploadDate)) err(w, 'uploadDate must be YYYY-MM-DD');
+        if (p.video.cropTop && !(p.video.cropTop > 0 && p.video.cropTop < p.video.height)) err(w, 'cropTop must be between 0 and height');
+      }
+    }
     if (p.image) checkImage(p.image, `${where} image`);
     (p.gallery || []).forEach((g, j) => checkImage(g, `${where} gallery[${j}]`));
     (p.links || []).forEach((l, j) => {

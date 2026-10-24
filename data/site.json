@@ -1,24 +1,25 @@
 {
-  "siteUrl": "https://pranavkushwaha.github.io",
+  "siteUrl": "https://thebossbaby.github.io",
   "lang": "en-GB",
   "locale": "en_GB",
   "name": "Pranav Kushwaha",
   "shortName": "Pranav K.",
   "initials": "PK",
-  "role": "Graphics & Engine Programmer",
+  "role": "Game Engine & Graphics Programmer",
   "location": "United Kingdom",
   "availability": "Open to senior Unreal and graphics programming roles",
-  "intro": "Seven years building games in Unreal Engine and Unity. Now writing renderers from the ground up: a Vulkan 1.3 engine in C++20, plus PBR and stylized rendering in OpenGL.",
-  "focus": ["C++20", "Vulkan", "OpenGL", "GLSL", "Unreal Engine"],
+  "intro": "Game Optimization Engineer at Samsung Electronics. Seven years in C++, Unreal Engine and Unity: engine plugins, GPU profiling and rendering on PC, PlayStation 5, mobile and Apple Vision Pro. In my own time, I'm writing a Vulkan 1.3 engine from scratch.",
+  "focus": ["C++", "Unreal Engine 5", "Vulkan", "OpenGL", "PS5 (AGC)"],
   "stats": [
     { "value": "7+", "label": "years in game development" },
-    { "value": "3", "label": "engine stacks: Unreal, Unity, my own" },
-    { "value": "1st", "label": "place, Smart India Hackathon 2020" }
+    { "value": "40%", "label": "less VRAM on Apple Vision Pro at Tencent" },
+    { "value": "42%", "label": "fewer draw calls in Project T on PS5" }
   ],
   "about": [
-    "I started making games as a hobby in my second year of college. By my third year I was freelancing on Upwork, building games in Unity for clients.",
-    "At Pole To Win I moved from Unity to Unreal Engine, delivered a solo trial game, then joined a four-developer team building a multiplayer game for Android and iOS in Unreal and C++. I also onboarded and mentored engineers and technical artists who were new to Unreal.",
-    "I studied Computer Games Engineering at Newcastle University, where rendering became my focus. Most of my time now goes below the engine layer: Vulkan and OpenGL renderers, GPU synchronisation, and the architecture that keeps them maintainable."
+    "I started making games as a hobby in my second year of college, and by my third year I was freelancing in Unity for international clients.",
+    "At Pole To Win I moved to Unreal Engine and C++. I built a C++ engine with Lua scripting and its own input, debugger and profiler modules, then gameplay and engine systems for an Android multiplayer RTS, onboarding and mentoring engineers and technical artists along the way.",
+    "After an MSc in Computer Games Engineering at Newcastle University, graduating with Distinction, I joined Tencent in London and brought Unreal Engine 5 rendering and UI to Apple Vision Pro. I now work at Samsung Electronics as a Game Optimization Engineer, building engine plugins and performance tooling, with a co-authored patent application on rendering performance.",
+    "Outside work, most of my time goes below the engine layer: Vulkan and OpenGL renderers, GPU synchronisation, and the architecture that keeps them maintainable."
   ],
   "email": "pranavkushwaha18@gmail.com",
   "phone": "+44 7767437160",
@@ -42,11 +43,11 @@
     "alt": "Pranav Kushwaha standing on a street in front of a red-brick terrace"
   },
   "seo": {
-    "title": "Pranav Kushwaha | Graphics & Engine Programmer (C++, Vulkan, Unreal)",
-    "description": "Portfolio of Pranav Kushwaha, a graphics and engine programmer with 7 years in game development. Vulkan 1.3 engine in C++20, PBR and stylized OpenGL renderers, Unreal Engine.",
+    "title": "Pranav Kushwaha | Game Engine & Graphics Programmer (C++, Unreal, Vulkan)",
+    "description": "Portfolio of Pranav Kushwaha, game engine and graphics programmer with 7 years in C++, Unreal Engine and Unity. Samsung, Tencent, PS5 rendering, a Vulkan 1.3 engine and OpenGL PBR projects.",
     "ogImage": "/assets/img/og-default.jpg",
     "ogImageAlt": "Stylized low-poly forest scene rendered in a custom OpenGL renderer",
     "twitterHandle": "",
-    "knowsAbout": ["Graphics programming", "Real-time rendering", "Vulkan", "Physically based rendering", "C++", "OpenGL", "GLSL", "Game engine architecture", "Unreal Engine", "Unity"]
+    "knowsAbout": ["Game engine programming", "Graphics programming", "Real-time rendering", "Vulkan", "OpenGL", "GLSL", "PlayStation 5", "Physically based rendering", "Deferred rendering", "GPU profiling", "C++", "Unreal Engine", "Unity", "Apple Vision Pro"]
   }
 }

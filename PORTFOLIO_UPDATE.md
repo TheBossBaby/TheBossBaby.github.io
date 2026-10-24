@@ -17,6 +17,7 @@ Use this file after a Project V PR is merged to update the Project V entry on my
 | Data | `data/projects.json`, the object with `"slug": "project-v"` |
 | Live page | `/projects/project-v/` (also featured on the home page) |
 | Cover image | `assets/img/projects/project-v-1280.webp` and `project-v-800.webp` (16:9) |
+| Demo clip | `video` in the entry: `assets/video/project-v-720.mp4`, `project-v-480.mp4`, poster `assets/img/projects/project-v-poster.webp`. `cropTop: 29` hides the captured window title bar. |
 | Snippet 1: "Frames in flight & draw loop" | `gallery[0]`, `assets/img/projects/project-v-frames.webp` (1273×1300) |
 | Snippet 2: "Pipeline creation with RAII + builders" | `gallery[1]`, `assets/img/projects/project-v-pipeline.webp` (1209×840) |
 | Repos | `TheBossBaby/project-v-engine`, `project-v-core`, `project-v-vulkan` (in `links`) |
@@ -46,9 +47,10 @@ The Wix version was one plain-text block. Here each part is its own field, and t
    - Advance `roadmap`.
    - Set `updated` to today.
 3. **Media (optional):**
-   - If I give you a new clip, extract a clean frame with ffmpeg, crop off the window title bar, and keep it 16:9. Export `project-v-1280.webp` (1280×720) and `project-v-800.webp` (800×450). Propose it as the new cover and update `image.alt`.
+   - If I give you a new clip, encode it to `assets/video/project-v-720.mp4` and `project-v-480.mp4` (H.264, `-movflags +faststart`, see the README), and save its first frame as `project-v-poster.webp`. Update `video.width`, `height`, `duration`, `uploadDate`, `caption`, and `cropTop` (the height of the window title bar, or remove it if the capture has none).
+   - Also extract a clean frame for the cover, crop off the window title bar, and keep it 16:9. Export `project-v-1280.webp` (1280×720) and `project-v-800.webp` (800×450). Update `image.alt`.
    - If a snippet's source has changed a lot, regenerate that snippet image (see "Snippet images" below) and propose replacing it. Update `width`, `height`, `title`, `caption` and `alt` in `gallery`.
-   - If I give you a YouTube upload, put its 11-character ID in `video`. The page shows a click-to-play embed over the cover.
+   - If I give you a YouTube upload instead of a file, put its 11-character ID in `youtube` and remove `video`.
 4. **Show me** the diff of `data/projects.json` plus any new images. **Wait for my OK.**
 5. **Apply:** write the changes, run `npm run check` and `npm run build`, and commit to a branch if I ask. Don't push.
 6. **Report** what changed and which files were touched.

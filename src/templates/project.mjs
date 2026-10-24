@@ -2,7 +2,7 @@ import { html } from '../lib/html.mjs';
 import { icon } from './icons.mjs';
 import { layout } from './layout.mjs';
 import { projectJsonLd } from './seo.mjs';
-import { image, statusBadge, techList, linkButton, formatDate, projectCard } from './components.mjs';
+import { image, statusBadge, techList, linkButton, formatDate, projectCard, videoPlayer, metricsList } from './components.mjs';
 
 function meta(ctx, p) {
   const rows = [
@@ -19,14 +19,21 @@ function meta(ctx, p) {
 }
 
 function media(ctx, p) {
+  const sizes = '(min-width: 1200px) 1120px, 100vw';
   if (p.video) {
+    return html`<figure class="project-hero-media">
+      ${videoPlayer(ctx, p.video, { label: `${p.title}: video demo` })}
+      ${p.video.caption ? html`<figcaption class="media-caption">${p.video.caption}</figcaption>` : ''}
+    </figure>`;
+  }
+  if (p.youtube) {
     // Click-to-load YouTube: no third-party requests until the visitor asks for the video.
-    return html`<div class="video" data-youtube="${p.video}">
-      ${image(ctx, p.image, { sizes: '(min-width: 1200px) 1120px, 100vw', eager: true })}
+    return html`<div class="video" data-youtube="${p.youtube}">
+      ${image(ctx, p.image, { sizes, eager: true })}
       <button class="video-play" type="button" aria-label="Play video: ${p.title}"><svg width="68" height="48" viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5 7.7A8.5 8.5 0 0 0 60.5 1.7C55.2.3 34 .3 34 .3S12.8.3 7.5 1.7a8.5 8.5 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#e33"/><path d="M45 24 27 14v20" fill="#fff"/></svg></button>
     </div>`;
   }
-  return html`<figure class="project-hero-media">${image(ctx, p.image, { sizes: '(min-width: 1200px) 1120px, 100vw', eager: true })}</figure>`;
+  return html`<figure class="project-hero-media">${image(ctx, p.image, { sizes, eager: true })}</figure>`;
 }
 
 function sections(ctx, p) {
@@ -94,7 +101,7 @@ export function renderProject(ctx, p, index) {
     ogImageAlt: p.image.alt,
     jsonLd: projectJsonLd(ctx, p),
     bodyClass: 'page-project',
-    preload: html`<link rel="preload" as="image" href="${ctx.url(p.image.src)}" fetchpriority="high">`,
+    preload: html`<link rel="preload" as="image" href="${ctx.url(p.video ? p.video.poster : p.image.src)}" fetchpriority="high">`,
     main: html`<article class="project">
   <div class="container">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -110,6 +117,7 @@ export function renderProject(ctx, p, index) {
       <p class="project-tagline">${p.tagline}</p>
       ${p.updateNote ? html`<p class="update-note mono">${p.updateNote}</p>` : ''}
       ${p.links.length ? html`<div class="actions">${p.links.map((l, i) => linkButton(l, i === 0 ? 'primary' : 'ghost'))}</div>` : ''}
+      ${metricsList(p.metrics)}
     </header>
     ${media(ctx, p)}
     <div class="project-layout">

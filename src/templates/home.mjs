@@ -2,7 +2,7 @@ import { html } from '../lib/html.mjs';
 import { icon } from './icons.mjs';
 import { layout } from './layout.mjs';
 import { homeJsonLd } from './seo.mjs';
-import { image, statusBadge, techList, linkButton, formatDate, sectionHead, projectCard } from './components.mjs';
+import { image, statusBadge, techList, linkButton, formatDate, sectionHead, projectCard, videoPlayer } from './components.mjs';
 
 function hero(ctx) {
   const { site } = ctx;
@@ -25,7 +25,7 @@ function hero(ctx) {
     </dl>
   </div>
   ${featured
-    ? html`<p class="hero-caption mono" aria-hidden="true">Live WebGL lensing sketch · the end goal of <a href="${ctx.url(ctx.projectPath(featured))}" tabindex="-1">${featured.shortTitle || featured.title}</a></p>`
+    ? html`<p class="hero-caption mono" aria-hidden="true">Live WebGL sketch: a wormhole onto another galaxy · the end goal of <a href="${ctx.url(ctx.projectPath(featured))}" tabindex="-1">${featured.shortTitle || featured.title}</a></p>`
     : ''}
 </section>`;
 }
@@ -35,10 +35,12 @@ function featuredProject(ctx, p) {
   const shown = p.highlights.slice(0, 4);
   const more = p.highlights.length - shown.length;
   return html`<article class="featured" aria-labelledby="featured-title">
-    <a class="featured-media" href="${href}" tabindex="-1" aria-hidden="true">
-      ${image(ctx, p.image, { sizes: '(min-width: 1100px) 620px, 100vw' })}
+    <div class="featured-media">
+      ${p.video
+        ? videoPlayer(ctx, p.video, { controls: false, label: `${p.title}: video demo` })
+        : image(ctx, p.image, { sizes: '(min-width: 1100px) 620px, 100vw' })}
       <span class="featured-flag mono">Currently building</span>
-    </a>
+    </div>
     <div class="featured-body">
       <p class="card-meta">${statusBadge(p.status)}${p.updated ? html`<span class="mono">Updated ${formatDate(p.updated, ctx.site.lang)}</span>` : ''}</p>
       <h3 id="featured-title" class="featured-title"><a href="${href}">${p.title}</a></h3>
@@ -93,7 +95,7 @@ function about(ctx) {
       <figcaption class="mono">${icon('pin', { size: 14 })}${site.location}</figcaption>
     </figure>
     <div class="about-body">
-      ${sectionHead({ id: 'about', eyebrow: 'About', title: 'From Unity freelancing to writing my own Vulkan backend' })}
+      ${sectionHead({ id: 'about', eyebrow: 'About', title: 'From Unity freelancing to Samsung, Tencent and my own Vulkan engine' })}
       <div class="prose">${site.about.map((para) => html`<p>${para}</p>`)}</div>
       <h3 class="mini-head">Skills</h3>
       <dl class="skills">
@@ -104,26 +106,32 @@ function about(ctx) {
 </section>`;
 }
 
+const bulletList = (points) => html`<ul class="bullets">${points.map((pt) => html`<li>${pt}</li>`)}</ul>`;
+
+function job(j) {
+  return html`<li class="${j.current ? 'timeline-item is-current' : 'timeline-item'}">
+    <div class="timeline-head">
+      <h3>${j.role} <span class="at">at ${j.org}</span></h3>
+      <p class="mono timeline-period">${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}${j.period}</p>
+    </div>
+    ${j.location ? html`<p class="timeline-location mono">${j.location}</p>` : ''}
+    <p class="timeline-summary">${j.summary}</p>
+    ${j.points?.length ? bulletList(j.points) : ''}
+    ${(j.groups || []).map((g) => html`<div class="timeline-group"><h4>${g.title}</h4>${bulletList(g.points)}</div>`)}
+  </li>`;
+}
+
 function experience(ctx) {
   const { career } = ctx;
   return html`<section id="experience" class="section" aria-labelledby="experience-title">
   <div class="container">
     ${sectionHead({ id: 'experience', eyebrow: 'Experience', title: 'Where I have shipped' })}
     <div class="experience">
-      <ol class="timeline">
-        ${career.experience.map((job) => html`<li class="timeline-item">
-          <div class="timeline-head">
-            <h3>${job.role} <span class="at">at ${job.org}</span></h3>
-            <p class="mono timeline-period">${job.period}</p>
-          </div>
-          <p class="timeline-summary">${job.summary}</p>
-          <ul class="bullets">${job.points.map((pt) => html`<li>${pt}</li>`)}</ul>
-        </li>`)}
-      </ol>
+      <ol class="timeline">${career.experience.map(job)}</ol>
       <aside class="side-cards">
         <div class="panel">
           <h3 class="mini-head">Education</h3>
-          <ul class="plain">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}${e.period ? ` · ${e.period}` : ''}</span></li>`)}</ul>
+          <ul class="plain">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}</span>${e.period ? html`<span class="mono small">${e.period}</span>` : ''}</li>`)}</ul>
         </div>
         <div class="panel">
           <h3 class="mini-head">Recognition</h3>

@@ -1,38 +1,100 @@
 {
   "skills": [
-    { "group": "Languages", "items": ["C++20", "C#", "GLSL"] },
-    { "group": "Graphics APIs", "items": ["Vulkan 1.3", "OpenGL"] },
-    { "group": "Rendering", "items": ["Physically based rendering", "GPU synchronisation", "Real-time rendering"] },
-    { "group": "Engines", "items": ["Unreal Engine", "Unity", "Custom C++ engines"] },
-    { "group": "Tooling", "items": ["CMake", "Git", "EnTT", "GLFW", "Assimp"] },
-    { "group": "Platforms", "items": ["Windows", "Android", "iOS"] }
+    { "group": "Languages", "items": ["C++", "C#", "Lua"] },
+    { "group": "Graphics", "items": ["Vulkan", "OpenGL", "GLSL", "PlayStation 5 API (AGC, PSSL)", "PBR", "Deferred lighting"] },
+    { "group": "Engines", "items": ["Unreal Engine 5", "Unity", "Custom C++ engines"] },
+    { "group": "Engine systems", "items": ["Rendering pipelines", "Cross-platform architecture", "ECS", "Multithreading", "GPU & memory profiling"] },
+    { "group": "Tools", "items": ["RenderDoc", "Nsight Graphics", "Razor GPU", "Git", "Perforce"] },
+    { "group": "Platforms", "items": ["PC", "PlayStation 5", "Android", "iOS", "Apple Vision Pro"] }
   ],
   "experience": [
     {
-      "role": "Game Developer",
-      "org": "Pole To Win",
-      "period": "About 2.5 years",
-      "summary": "Joined as a junior Unity developer and moved to Unreal Engine and C++.",
+      "role": "Game Optimization Engineer",
+      "org": "Samsung Electronics",
+      "location": "Staines, UK",
+      "start": "2025-07",
+      "end": "",
+      "period": "Jul 2025 – Present",
+      "current": true,
+      "summary": "Optimization tooling and engine plugins for an unannounced project.",
       "points": [
-        "Learned Unreal Engine with little guidance and delivered a solo trial game, which led to a core team role.",
-        "Built a multiplayer mobile game for Android and iOS in Unreal and C++ in a team of four developers.",
-        "Onboarded and mentored engineers and technical artists who were new to Unreal Engine."
+        "Developed high-performance Unity and Unreal Engine plugins that communicate with internal optimization tools.",
+        "Replaced JSON with a compact binary protocol, cutting inter-process communication bandwidth by about 32%.",
+        "Reviewed profiling reports for games moved from PC to mobile and found gaps, such as a major studio's mobile engine missing frustum culling.",
+        "Co-authored a patent application on novel techniques for improving rendering performance.",
+        "Built a plug-and-play performance optimization toolset selected for integration into an upcoming Samsung flagship device."
       ]
     },
     {
-      "role": "Freelance Game Developer",
-      "org": "Upwork",
-      "period": "From college onwards",
-      "summary": "Built games and prototypes for clients, mainly in Unity.",
+      "role": "Game Client Development Intern",
+      "org": "Tencent",
+      "location": "London, UK",
+      "start": "2024-09",
+      "end": "2025-07",
+      "period": "Sep 2024 – Jul 2025",
+      "summary": "Unreal Engine 5 rendering and UI for Apple Vision Pro.",
       "points": [
-        "Delivered client projects in Unity and C# over several years of freelancing."
+        "Led the investigation of alpha holdout blending in UE5 on Apple Vision Pro, using RenderDoc to find mobile rendering pipeline limits for transparent elements in mixed reality.",
+        "Found that multi-pass transparency, which blends separate opaque and translucent buffers, worked on Windows and Mac but was unsupported on visionOS, iOS and Android.",
+        "Built a pipeline that passes ASTC-compressed textures from Unreal Engine to the native visionOS renderer, cutting VRAM use by 40%.",
+        "Modified Unreal Engine source so UMG designs are replicated in the native UI framework, enabling Vision Pro eye-gaze and pinch input.",
+        "Implemented face-lock behaviour for RealityKit entities using its ECS."
+      ]
+    },
+    {
+      "role": "Software Developer (Unreal Engine)",
+      "org": "Pole To Win",
+      "location": "Hyderabad, India",
+      "start": "2021-03",
+      "end": "2023-09",
+      "period": "Mar 2021 – Sep 2023",
+      "summary": "Engine and gameplay programming across three projects, moving from Unity to Unreal Engine and C++.",
+      "groups": [
+        {
+          "title": "Game engine",
+          "points": [
+            "Developed a C++ game engine with gameplay architecture, game state management and multithreaded systems.",
+            "Integrated Lua scripting so gameplay logic can drive engine modules.",
+            "Built three engine modules: input, debugger and profiler.",
+            "Used the abstract factory pattern to support each target API and platform."
+          ]
+        },
+        {
+          "title": "Mobile RTS game",
+          "points": [
+            "Implemented the gameplay framework and engine-side systems for movement, collision and game state in Unreal Engine and C++.",
+            "Worked on gameplay systems, UI and shaders for an Android multiplayer title.",
+            "Built an Unreal plugin with UPL to integrate an ad SDK, designed so another SDK can be swapped in with minimal code changes.",
+            "Designed the architecture to decouple UI from gameplay logic."
+          ]
+        },
+        {
+          "title": "Endless runner",
+          "points": [
+            "Built an Unreal Engine 4 endless runner with multithreaded background loading and object pooling for runtime performance."
+          ]
+        }
+      ]
+    },
+    {
+      "role": "Freelance Game Developer (Unity)",
+      "org": "Self-employed",
+      "location": "Bhopal, India",
+      "start": "2018-12",
+      "end": "2021-02",
+      "period": "Dec 2018 – Feb 2021",
+      "summary": "Unity games for international clients.",
+      "points": [
+        "Developed multiple Unity games, implementing gameplay mechanics and third-party SDK integrations."
       ]
     }
   ],
   "education": [
-    { "course": "Computer Games Engineering", "org": "Newcastle University", "period": "" }
+    { "course": "MSc Computer Games Engineering, Distinction", "org": "Newcastle University, UK", "period": "2023 – 2024" },
+    { "course": "Bachelor of Engineering, Computer Engineering", "org": "Sagar Institute of Research & Technology, Bhopal, India", "period": "2016 – 2020" }
   ],
   "achievements": [
+    { "title": "Patent application co-author", "detail": "Rendering performance optimization, Samsung Electronics." },
     { "title": "1st place, Smart India Hackathon 2020", "detail": "Led the winning team." },
     { "title": "10th worldwide, Decentraland Game Jam 2.0", "detail": "Global ranking across all entries." }
   ],

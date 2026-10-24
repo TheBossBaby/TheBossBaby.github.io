@@ -6,6 +6,7 @@ const websiteId = (ctx) => `${ctx.abs('/')}#website`;
 
 function person(ctx) {
   const { site, career } = ctx;
+  const current = career.experience.find((job) => job.current);
   return {
     '@type': 'Person',
     '@id': personId(ctx),
@@ -17,6 +18,7 @@ function person(ctx) {
     address: { '@type': 'PostalAddress', addressCountry: site.location },
     knowsAbout: site.seo.knowsAbout,
     alumniOf: career.education.map((e) => ({ '@type': 'CollegeOrUniversity', name: e.org })),
+    ...(current ? { worksFor: { '@type': 'Organization', name: current.org } } : {}),
     award: career.achievements.map((a) => a.title),
     sameAs: site.socials.map((s) => s.url),
   };
@@ -49,6 +51,21 @@ export function homeJsonLd(ctx) {
   };
 }
 
+function videoObject(ctx, project) {
+  const v = project.video;
+  return {
+    '@type': 'VideoObject',
+    name: `${project.shortTitle || project.title}: video demo`,
+    description: v.caption || project.summary,
+    thumbnailUrl: ctx.abs(v.poster),
+    contentUrl: ctx.abs(v.src),
+    uploadDate: v.uploadDate,
+    ...(v.duration ? { duration: v.duration } : {}),
+    width: v.width,
+    height: v.height,
+  };
+}
+
 export function projectJsonLd(ctx, project) {
   const url = ctx.abs(ctx.projectPath(project));
   const repos = project.links.filter((l) => /github\.com/.test(l.url)).map((l) => l.url);
@@ -66,6 +83,7 @@ export function projectJsonLd(ctx, project) {
     author: { '@id': personId(ctx) },
     isPartOf: { '@id': websiteId(ctx) },
     ...(project.updated ? { dateModified: project.updated } : {}),
+    ...(project.video ? { video: videoObject(ctx, project) } : {}),
     ...(repos.length ? { codeRepository: repos[0], programmingLanguage: 'C++', sameAs: repos } : {}),
   };
   return {

@@ -71,6 +71,40 @@
     });
   });
 
+  // Muted demo clips play only while on screen, so off-screen videos cost
+  // nothing. With reduced motion they stay on their poster frame; the
+  // project-page player still has controls for anyone who wants to play it.
+  const autoplay = document.querySelectorAll('video[data-autoplay]');
+  if (autoplay.length && !reduceMotion && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) target.play().catch(() => {});
+        else target.pause();
+      });
+    }, { threshold: 0.35 });
+    autoplay.forEach((v) => io.observe(v));
+  }
+
+  // Card previews: play the low-res clip while a mouse or keyboard focus is on the card.
+  if (!reduceMotion && matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.card.has-video').forEach((card) => {
+      const clip = card.querySelector('[data-hover-play]');
+      if (!clip) return;
+      const start = () => {
+        clip.play().then(() => card.classList.add('is-playing')).catch(() => {});
+      };
+      const stop = () => {
+        card.classList.remove('is-playing');
+        clip.pause();
+        clip.currentTime = 0;
+      };
+      card.addEventListener('pointerenter', start);
+      card.addEventListener('pointerleave', stop);
+      card.addEventListener('focusin', start);
+      card.addEventListener('focusout', stop);
+    });
+  }
+
   // Gentle reveal for content below the fold. Content already on screen is
   // never hidden, so there is no flash on load.
   if (!reduceMotion && 'IntersectionObserver' in window) {
