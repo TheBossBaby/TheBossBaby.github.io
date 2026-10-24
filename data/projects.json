@@ -1,0 +1,170 @@
+[
+  {
+    "slug": "project-v",
+    "title": "Project V — Vulkan Engine",
+    "shortTitle": "Project V",
+    "status": "wip",
+    "featured": true,
+    "updated": "2026-10-24",
+    "updateNote": "Work in progress, updated after every PR.",
+    "year": "2026",
+    "category": "Game engine",
+    "role": "Solo developer",
+    "platforms": ["Windows", "Linux", "macOS"],
+    "tagline": "A C++20 game engine with a hand-written Vulkan 1.3 renderer.",
+    "summary": "Built from scratch as the foundation for rendering an Interstellar-style wormhole and skybox.",
+    "overview": [
+      "A C++20 game engine with a hand-written Vulkan 1.3 renderer, built from scratch as the foundation for rendering an Interstellar-style wormhole and skybox."
+    ],
+    "architecture": "Three modules. There's an abstract core interface (IRenderer, IWindow), an engine layer (EnTT ECS, mesh and shader managers, Assimp import), and a Vulkan backend that implements the core interface. Every Vulkan object is a move-only RAII wrapper paired with a fluent, validating builder.",
+    "highlightsTitle": "Working now",
+    "highlights": [
+      "FBX meshes loaded from disk and uploaded to the GPU",
+      "Pipeline cache keyed on shader pairs",
+      "ECS rotate system",
+      "Perspective camera (left-handed, Z-up)",
+      "Per-object MVP matrices sent as push constants",
+      "Frames in flight with fence and semaphore synchronisation"
+    ],
+    "knownIssues": [
+      "No depth buffer yet, so back faces can draw over front faces (visible in the current render).",
+      "Vertex and index buffers are host-visible and not yet staged into device-local memory.",
+      "Swapchain resize isn't handled."
+    ],
+    "roadmap": [
+      "Depth attachment",
+      "Staging buffers",
+      "Descriptor sets",
+      "Skybox",
+      "Compute pipeline that ray-marches light paths through curved spacetime to render the wormhole's gravitational lensing"
+    ],
+    "tech": ["C++20", "Vulkan 1.3", "CMake", "EnTT", "GLFW", "Assimp", "spdlog"],
+    "image": {
+      "src": "/assets/img/projects/project-v-1280.webp",
+      "srcSmall": "/assets/img/projects/project-v-800.webp",
+      "width": 1280,
+      "height": 720,
+      "alt": "Two vertex-coloured cubes rendered by the Project V Vulkan backend on a black background"
+    },
+    "gallery": [
+      {
+        "title": "Frames in flight & draw loop",
+        "caption": "The CPU records frame N+1 while the GPU is still on frame N, with per-image render-finished semaphores and redundant pipeline binds skipped.",
+        "src": "/assets/img/projects/project-v-frames.webp",
+        "width": 1273,
+        "height": 1300,
+        "alt": "C++ source for vulkanRenderer beginFrame, draw and endFrame showing fence waits, swapchain acquire, push constants and queue submit"
+      },
+      {
+        "title": "Pipeline creation with RAII + builders",
+        "caption": "An API-agnostic pipeline description goes in and a Vulkan pipeline comes out, built from move-only RAII wrappers and validating builders.",
+        "src": "/assets/img/projects/project-v-pipeline.webp",
+        "width": 1209,
+        "height": 840,
+        "alt": "C++ source for vulkanRenderer createGraphicsPipeline using shader module, pipeline layout and graphics pipeline builders"
+      }
+    ],
+    "video": "",
+    "links": [
+      { "label": "Engine", "url": "https://github.com/TheBossBaby/project-v-engine", "icon": "github" },
+      { "label": "Core interfaces", "url": "https://github.com/TheBossBaby/project-v-core", "icon": "github" },
+      { "label": "Vulkan backend", "url": "https://github.com/TheBossBaby/project-v-vulkan", "icon": "github" }
+    ]
+  },
+  {
+    "slug": "project-t",
+    "title": "Project T",
+    "status": "complete",
+    "featured": false,
+    "year": "",
+    "category": "Game",
+    "role": "Solo developer",
+    "platforms": ["Windows"],
+    "tagline": "A top-down Windows game built from scratch in C++ and OpenGL.",
+    "summary": "A top-down game with its own OpenGL renderer and GLSL shaders, with no engine underneath.",
+    "overview": [
+      "A top-down game for Windows built from scratch, with no third-party engine. Rendering, game loop and gameplay are written in C++ with OpenGL and GLSL.",
+      "The game runs a timed arena level with collectibles, obstacles and a live frame-time overlay."
+    ],
+    "highlightsTitle": "Highlights",
+    "highlights": [
+      "Custom OpenGL renderer with hand-written GLSL shaders",
+      "In-game overlay reporting frames per second and milliseconds per frame",
+      "Around 119 FPS (8.4 ms per frame) in the arena level"
+    ],
+    "tech": ["C++", "OpenGL", "GLSL"],
+    "image": {
+      "src": "/assets/img/projects/project-t-1600.webp",
+      "srcSmall": "/assets/img/projects/project-t-800.webp",
+      "width": 1600,
+      "height": 900,
+      "alt": "Top-down view of a sandy arena with green blocks, red collectibles and a timer reading 182 seconds"
+    },
+    "gallery": [],
+    "video": "",
+    "links": []
+  },
+  {
+    "slug": "pbr-opengl",
+    "title": "PBR in OpenGL",
+    "status": "complete",
+    "featured": false,
+    "year": "",
+    "category": "Rendering demo",
+    "role": "Solo developer",
+    "platforms": ["Windows"],
+    "tagline": "Physically based rendering implemented from scratch.",
+    "summary": "A physically based rendering implementation written from the ground up in C++ and OpenGL.",
+    "overview": [
+      "Physically based rendering implemented from scratch in C++ and OpenGL, with no rendering library.",
+      "The scene shows a textured, reflective sphere above displaced terrain, used to test material response under different lighting."
+    ],
+    "highlightsTitle": "Highlights",
+    "highlights": [
+      "PBR shading written by hand in GLSL",
+      "Texture-driven material inputs"
+    ],
+    "tech": ["C++", "OpenGL", "GLSL", "PBR"],
+    "image": {
+      "src": "/assets/img/projects/pbr-opengl-1600.webp",
+      "srcSmall": "/assets/img/projects/pbr-opengl-800.webp",
+      "width": 1600,
+      "height": 900,
+      "alt": "A reflective blue tiled sphere lit with physically based shading above rough brown terrain"
+    },
+    "gallery": [],
+    "video": "",
+    "links": []
+  },
+  {
+    "slug": "stylized-scene-opengl",
+    "title": "Stylized Scene in OpenGL",
+    "status": "complete",
+    "featured": false,
+    "year": "",
+    "category": "Rendering demo",
+    "role": "Solo developer",
+    "platforms": ["Windows"],
+    "tagline": "A stylized low-poly 3D scene rendered from scratch.",
+    "summary": "A 3D application that renders a stylized low-poly environment with a custom C++ and OpenGL renderer.",
+    "overview": [
+      "A 3D application built from scratch in C++ and OpenGL to render a stylized low-poly environment: a forest of trees, mountains, a building and terrain under a night sky."
+    ],
+    "highlightsTitle": "Highlights",
+    "highlights": [
+      "Flat-shaded, low-poly art direction",
+      "Hundreds of trees on screen at 120 FPS (8.3 ms per frame)"
+    ],
+    "tech": ["C++", "OpenGL", "GLSL"],
+    "image": {
+      "src": "/assets/img/projects/stylized-scene-1600.webp",
+      "srcSmall": "/assets/img/projects/stylized-scene-800.webp",
+      "width": 1600,
+      "height": 900,
+      "alt": "A low-poly forest of dark green trees on bright grass with grey mountains and a building under a night sky"
+    },
+    "gallery": [],
+    "video": "",
+    "links": []
+  }
+]

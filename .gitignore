@@ -1,0 +1,17 @@
+# Build output (GitHub Actions builds and deploys it)
+dist/
+
+# Dependencies and logs
+node_modules/
+npm-debug.log*
+
+# Source art you don't want in the repo (keep exported .webp in assets/)
+assets-src/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea/

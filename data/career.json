@@ -1,0 +1,52 @@
+{
+  "skills": [
+    { "group": "Languages", "items": ["C++20", "C#", "GLSL"] },
+    { "group": "Graphics APIs", "items": ["Vulkan 1.3", "OpenGL"] },
+    { "group": "Rendering", "items": ["Physically based rendering", "GPU synchronisation", "Real-time rendering"] },
+    { "group": "Engines", "items": ["Unreal Engine", "Unity", "Custom C++ engines"] },
+    { "group": "Tooling", "items": ["CMake", "Git", "EnTT", "GLFW", "Assimp"] },
+    { "group": "Platforms", "items": ["Windows", "Android", "iOS"] }
+  ],
+  "experience": [
+    {
+      "role": "Game Developer",
+      "org": "Pole To Win",
+      "period": "About 2.5 years",
+      "summary": "Joined as a junior Unity developer and moved to Unreal Engine and C++.",
+      "points": [
+        "Learned Unreal Engine with little guidance and delivered a solo trial game, which led to a core team role.",
+        "Built a multiplayer mobile game for Android and iOS in Unreal and C++ in a team of four developers.",
+        "Onboarded and mentored engineers and technical artists who were new to Unreal Engine."
+      ]
+    },
+    {
+      "role": "Freelance Game Developer",
+      "org": "Upwork",
+      "period": "From college onwards",
+      "summary": "Built games and prototypes for clients, mainly in Unity.",
+      "points": [
+        "Delivered client projects in Unity and C# over several years of freelancing."
+      ]
+    }
+  ],
+  "education": [
+    { "course": "Computer Games Engineering", "org": "Newcastle University", "period": "" }
+  ],
+  "achievements": [
+    { "title": "1st place, Smart India Hackathon 2020", "detail": "Led the winning team." },
+    { "title": "10th worldwide, Decentraland Game Jam 2.0", "detail": "Global ranking across all entries." }
+  ],
+  "testimonials": [
+    {
+      "name": "Santosh Shedbalkar",
+      "title": "Head of Engineering, 1518 Studios, Inc",
+      "relation": "Managed Pranav for about 2.5 years at Pole To Win",
+      "url": "https://www.linkedin.com/in/sanshedbalkar/",
+      "pull": "He quickly became a core part of the development team. He took on multiple responsibilities on the project including on-boarding and mentoring multiple engineers and TechArtists who were unfamiliar with working on Unreal Engine.",
+      "quote": [
+        "I had the good fortune of working with Pranav for about 2.5 years as his Manager at PTW. He joined as a Junior Unity developer but when presented with an opportunity to learn and work with Unreal Engine, he took it and put in the hard work to learn it with very little guidance. He successfully delivered the trial solo game that he worked on with Unreal and the game looked and played fantastic. Based on the high quality of the game, he was put on a multiplayer mobile game using Unreal and C++ and he quickly became a core part of the development team. He took on multiple responsibilities on the project including on-boarding and mentoring multiple engineers and TechArtists who were unfamiliar with working on Unreal Engine. Because of his friendly demeanour, patience, and willingness to help out, many team members felt quite comfortable approaching him for any kind of technical issues and he helped them the best way he could.",
+        "He left us to pursue higher studies in Game development, with the help of which, I have no doubt that he will become an even better game developer. He possesses very good written and spoken communication skills and is always very professional in his conduct. He is a very curious person by nature and strives to understand/learn new things constantly. I definitely recommend him for any Game Developer position."
+      ]
+    }
+  ]
+}
