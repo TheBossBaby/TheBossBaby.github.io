@@ -41,6 +41,9 @@ export function validate({ site, projects, career }, root) {
     if (s.icon && !hasIcon(s.icon)) err(where, `unknown icon "${s.icon}"`);
   });
   if (site.contact?.formAction) checkUrl(site.contact.formAction, 'site.json contact.formAction');
+  const gaId = site.analytics?.gaMeasurementId;
+  if (gaId && !/^G-[A-Z0-9]{4,}$/.test(gaId)) err('site.json analytics.gaMeasurementId', `must be a GA4 measurement ID like "G-ABC123XYZ9" (got "${gaId}"). Universal Analytics "UA-" IDs no longer work.`);
+  if (gaId && !site.analytics.bannerText) err('site.json analytics', '"bannerText" is required when gaMeasurementId is set');
 
   // projects.json
   if (!Array.isArray(projects) || !projects.length) err('projects.json', 'must be a non-empty array');

@@ -1,5 +1,6 @@
 import { html, raw } from '../lib/html.mjs';
 import { icon } from './icons.mjs';
+import { analyticsScripts, consentBanner, consentFooterLink } from './analytics.mjs';
 
 const NAV = [
   { label: 'Work', hash: 'work' },
@@ -88,6 +89,7 @@ function footer(ctx) {
     <ul class="social-row" aria-label="Social profiles">
       ${site.socials.map((s) => html`<li><a href="${s.url}" rel="me noopener" target="_blank" aria-label="${s.label}">${icon(s.icon)}</a></li>`)}
     </ul>
+    ${consentFooterLink(ctx)}
     <a class="back-to-top" href="#top">${icon('arrowUp', { size: 16 })}<span>Back to top</span></a>
   </div>
 </footer>`;
@@ -108,7 +110,9 @@ ${header(ctx)}
 ${page.main}
 </main>
 ${footer(ctx)}
+${consentBanner(ctx)}
 <script src="${ctx.asset('js/main.js')}" defer></script>
+${analyticsScripts(ctx)}
 ${page.scripts || ''}
 ${devReload}
 </body>

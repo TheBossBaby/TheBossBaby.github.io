@@ -56,6 +56,7 @@ export function build({ dev = false, quiet = false } = {}) {
     'css/main.css': join(ROOT, 'src/styles/main.css'),
     'js/main.js': join(ROOT, 'src/scripts/main.js'),
     'js/hero.js': join(ROOT, 'src/scripts/hero.js'),
+    'js/analytics.js': join(ROOT, 'src/scripts/analytics.js'),
   };
   const assetVersions = {};
   rmSync(DIST, { recursive: true, force: true });
@@ -126,7 +127,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
       if (errors.length) throw Object.assign(new Error(`Data validation failed:\n  - ${errors.join('\n  - ')}`), { validation: true });
       console.log('Data is valid.');
     } else {
-      build();
+      build({ dev: process.argv.includes('--dev') });
     }
   } catch (e) {
     console.error(e.validation ? e.message : e);

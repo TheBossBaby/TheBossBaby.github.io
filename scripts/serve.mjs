@@ -3,9 +3,10 @@
 // live-reloads the browser. Zero dependencies. `npm run dev`
 
 import { createServer } from 'node:http';
-import { createReadStream, existsSync, statSync, watch } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, statSync, watch } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { extname, join, normalize } from 'node:path';
-import { build, ROOT, DIST } from './build.mjs';
+import { ROOT, DIST } from './build.mjs';
 
 const PORT = Number(process.env.PORT) || 4321;
 const TYPES = {
@@ -18,14 +19,16 @@ const TYPES = {
 const clients = new Set();
 let base = '';
 
+// Each rebuild runs in a fresh Node process, so edits to templates (ES modules,
+// which Node caches) and branch switches are always picked up.
 function rebuild(reason) {
+  const result = spawnSync(process.execPath, [join(ROOT, 'scripts/build.mjs'), '--dev'], { stdio: 'inherit' });
+  if (result.status !== 0) return; // build.mjs already printed the error
   try {
-    ({ base } = build({ dev: true }));
-    if (reason) console.log(`  ↻ ${reason}`);
-    for (const res of clients) res.write('data: reload\n\n');
-  } catch (e) {
-    console.error(e.validation ? `\n${e.message}\n` : e);
-  }
+    base = new URL(JSON.parse(readFileSync(join(ROOT, 'data/site.json'), 'utf8')).siteUrl).pathname.replace(/\/+$/, '');
+  } catch { /* keep the previous base */ }
+  if (reason) console.log(`  ↻ ${reason}`);
+  for (const res of clients) res.write('data: reload\n\n');
 }
 
 rebuild();
