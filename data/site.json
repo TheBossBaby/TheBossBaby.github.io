@@ -16,10 +16,8 @@
     { "value": "42%", "label": "fewer draw calls in Project T on PS5" }
   ],
   "about": [
-    "I started making games as a hobby in my second year of college, and by my third year I was freelancing in Unity for international clients.",
-    "At Pole To Win I moved to Unreal Engine and C++. I built a C++ engine with Lua scripting and its own input, debugger and profiler modules, then gameplay and engine systems for an Android multiplayer RTS, onboarding and mentoring engineers and technical artists along the way.",
-    "After an MSc in Computer Games Engineering at Newcastle University, graduating with Distinction, I joined Tencent in London and brought Unreal Engine 5 rendering and UI to Apple Vision Pro. I now work at Samsung Electronics as a Game Optimization Engineer, building engine plugins and performance tooling, with a co-authored patent application on rendering performance.",
-    "Outside work, most of my time goes below the engine layer: Vulkan and OpenGL renderers, GPU synchronisation, and the architecture that keeps them maintainable."
+    "I started in Unity, freelancing for clients while still at college, then moved to Unreal Engine and C++ at Pole To Win, building engine modules and mentoring engineers new to Unreal.",
+    "After an MSc in Computer Games Engineering with Distinction, I brought Unreal Engine 5 rendering to Apple Vision Pro at Tencent. I now build optimization tooling at Samsung, and spend my own time on a Vulkan engine."
   ],
   "email": "pranavkushwaha18@gmail.com",
   "phone": "+44 7767437160",

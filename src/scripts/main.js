@@ -44,6 +44,9 @@
     sections.forEach((s) => spy.observe(s));
   }
 
+  // "Save as PDF" on the CV page uses the browser's print dialog and the print stylesheet.
+  document.querySelectorAll('[data-print]').forEach((btn) => btn.addEventListener('click', () => window.print()));
+
   // Copy-to-clipboard for the email address.
   document.querySelectorAll('[data-copy]').forEach((btn) => {
     const label = btn.querySelector('[data-copy-label]');

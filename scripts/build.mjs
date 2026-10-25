@@ -10,6 +10,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { validate } from '../src/lib/validate.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderProject, renderNotFound } from '../src/templates/project.mjs';
+import { renderCv } from '../src/templates/cv.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -79,6 +80,7 @@ export function build({ dev = false, quiet = false } = {}) {
   // Pages
   write('index.html', renderHome(ctx));
   data.projects.forEach((p, i) => write(`projects/${p.slug}/index.html`, renderProject(ctx, p, i)));
+  write('cv/index.html', renderCv(ctx));
   write('404.html', renderNotFound(ctx));
 
   // Static files
@@ -90,6 +92,7 @@ export function build({ dev = false, quiet = false } = {}) {
   const today = new Date().toISOString().slice(0, 10);
   const urls = [
     { loc: ctx.abs('/'), lastmod: today, priority: '1.0' },
+    { loc: ctx.abs('/cv/'), lastmod: today, priority: '0.8' },
     ...data.projects.map((p) => ({ loc: ctx.abs(ctx.projectPath(p)), lastmod: p.updated || today, priority: p.featured ? '0.9' : '0.7' })),
   ];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
@@ -114,7 +117,7 @@ ${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><pri
   }, null, 2));
 
   if (!quiet) {
-    console.log(`Built ${data.projects.length + 2} pages to dist/ in ${Date.now() - started} ms${dev ? ' (dev)' : ''}`);
+    console.log(`Built ${data.projects.length + 3} pages to dist/ in ${Date.now() - started} ms${dev ? ' (dev)' : ''}`);
   }
   return { base };
 }

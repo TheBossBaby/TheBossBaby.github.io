@@ -51,6 +51,30 @@ export function homeJsonLd(ctx) {
   };
 }
 
+export function cvJsonLd(ctx) {
+  const url = ctx.abs('/cv/');
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ProfilePage',
+        url,
+        name: `CV of ${ctx.site.name}`,
+        isPartOf: { '@id': websiteId(ctx) },
+        mainEntity: { '@id': personId(ctx) },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: ctx.abs('/') },
+          { '@type': 'ListItem', position: 2, name: 'CV', item: url },
+        ],
+      },
+      person(ctx),
+    ],
+  };
+}
+
 function videoObject(ctx, project) {
   const v = project.video;
   return {
