@@ -270,9 +270,13 @@ main:focus { outline: none; }
 .hero-intro li { position: relative; padding-left: 20px; }
 .hero-intro li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 8px; height: 2px; border-radius: 2px; background: var(--accent); }
 .hero-intro li:first-child { color: var(--text); }
-.hero-focus { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 22px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-dim); }
-.hero-focus li { display: inline-flex; align-items: center; gap: 18px; }
-.hero-focus li + li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); margin-left: -11px; margin-right: -7px; }
+/* Core stack as readable chips: larger, brighter text with a clear outline. */
+.hero-focus { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.hero-focus li {
+  padding: 6px 13px; border-radius: 999px;
+  font-family: var(--font-mono); font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--text);
+  background: rgb(255 255 255 / 0.05); border: 1px solid var(--border-strong);
+}
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 .stats {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
