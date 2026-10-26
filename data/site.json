@@ -8,7 +8,12 @@
   "role": "Game Engine & Graphics Programmer",
   "location": "United Kingdom",
   "availability": "Open to senior Unreal and graphics programming roles",
-  "intro": "Game Optimization Engineer at Samsung Electronics. Seven years in C++, Unreal Engine and Unity: engine plugins, GPU profiling and rendering on PC, PlayStation 5, mobile and Apple Vision Pro. In my own time, I'm writing a Vulkan 1.3 engine from scratch.",
+  "intro": [
+    "Game Optimization Engineer at Samsung Electronics.",
+    "7 years in C++, Unreal Engine and Unity.",
+    "GPU profiling and rendering on PC, PS5, mobile and Vision Pro.",
+    "Building a Vulkan 1.3 engine in my own time."
+  ],
   "focus": ["C++", "Unreal Engine 5", "Vulkan", "OpenGL", "PS5 (AGC)"],
   "stats": [
     { "value": "7+", "label": "years in game development" },

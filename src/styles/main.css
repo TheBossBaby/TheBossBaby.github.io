@@ -265,7 +265,11 @@ main:focus { outline: none; }
   -webkit-background-clip: text; background-clip: text; color: transparent;
   width: fit-content;
 }
-.hero-intro { margin-top: 22px; max-width: 34em; color: var(--text-muted); font-size: var(--step-1); line-height: 1.55; }
+/* Short scannable lines instead of a paragraph; the first (current role) reads brightest. */
+.hero-intro { list-style: none; display: grid; gap: 6px; margin-top: 22px; max-width: 40em; color: var(--text-muted); font-size: var(--step-1); line-height: 1.45; }
+.hero-intro li { position: relative; padding-left: 20px; }
+.hero-intro li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 8px; height: 2px; border-radius: 2px; background: var(--accent); }
+.hero-intro li:first-child { color: var(--text); }
 .hero-focus { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 22px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-dim); }
 .hero-focus li { display: inline-flex; align-items: center; gap: 18px; }
 .hero-focus li + li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); margin-left: -11px; margin-right: -7px; }

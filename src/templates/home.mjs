@@ -14,7 +14,7 @@ function hero(ctx) {
     <p class="availability"><span class="pulse" aria-hidden="true"></span>${site.availability}</p>
     <h1 id="hero-title" class="hero-title">${site.name}</h1>
     <p class="hero-role">${site.role}</p>
-    <p class="hero-intro">${site.intro}</p>
+    <ul class="hero-intro">${site.intro.map((line) => html`<li>${line}</li>`)}</ul>
     <ul class="hero-focus" aria-label="Core stack">${site.focus.map((f) => html`<li>${f}</li>`)}</ul>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#work"><span>See my work</span>${icon('arrowRight', { size: 18 })}</a>
