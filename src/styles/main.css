@@ -412,6 +412,21 @@ main:focus { outline: none; }
 .pro-impact dd { margin: 0; font-size: var(--step-2); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); }
 .pro-impact dt { color: var(--text-muted); font-size: 0.92rem; line-height: 1.45; }
 .pro-card .tags { margin-top: auto; }
+.pro-case { border-top: 1px solid var(--border); padding-top: 14px; }
+/* An open case study shouldn't stretch the neighbouring cards. */
+.pro-grid:has(.pro-case[open]) { align-items: start; }
+.pro-case summary {
+  cursor: pointer; list-style: none; width: fit-content;
+  font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-strong);
+}
+.pro-case summary::-webkit-details-marker { display: none; }
+.pro-case summary::after { content: ' +'; }
+.pro-case[open] summary::after { content: ' −'; }
+.pro-case summary:hover { color: var(--text); }
+.pro-case-body { display: grid; gap: 10px; margin-top: 14px; color: var(--text-muted); font-size: 0.93rem; line-height: 1.55; }
+.pro-case-body strong { color: var(--text); font-weight: 600; }
+.pro-case-body h4 { margin-top: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+.pro-case-body .bullets { margin-top: 0; gap: 6px; }
 .pro-earlier { margin-top: 24px; color: var(--text-dim); font-size: 0.95rem; }
 .pro-earlier strong { color: var(--text-muted); font-weight: 500; }
 #work .actions { margin-top: 28px; }

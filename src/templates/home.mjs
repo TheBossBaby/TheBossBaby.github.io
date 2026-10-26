@@ -71,8 +71,24 @@ function professionalCard(j) {
     <dl class="pro-impact">
       ${j.impact.map((m) => html`<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`)}
     </dl>
+    ${j.caseStudy ? caseStudy(j.caseStudy) : ''}
     ${j.stack?.length ? techList(j.stack, `${j.org} stack`) : ''}
   </article>`;
+}
+
+// The story behind a headline number, collapsed by default to keep the card short.
+function caseStudy(cs) {
+  return html`<details class="pro-case">
+    <summary>${cs.title}</summary>
+    <div class="pro-case-body">
+      <p><strong>Challenge.</strong> ${cs.challenge}</p>
+      ${cs.insight ? html`<p><strong>Insight.</strong> ${cs.insight}</p>` : ''}
+      <h4>Approach</h4>
+      <ul class="bullets">${cs.approach.map((a) => html`<li>${a}</li>`)}</ul>
+      <h4>Results</h4>
+      <ul class="bullets">${cs.results.map((r) => html`<li>${r}</li>`)}</ul>
+    </div>
+  </details>`;
 }
 
 function professional(ctx) {
