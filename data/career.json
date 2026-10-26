@@ -14,6 +14,11 @@
       "role": "Game Optimization Engineer",
       "org": "Samsung Electronics",
       "headline": "Unity and Unreal optimization plugins and tooling for an upcoming Samsung flagship. A binary IPC protocol cut bandwidth by 32%, and I co-authored a patent application.",
+      "impact": [
+        { "value": "32%", "label": "less inter-process bandwidth after replacing JSON with a binary protocol" },
+        { "value": "Patent", "label": "application co-authored on rendering performance techniques" }
+      ],
+      "stack": ["C++", "C#", "Unreal Engine", "Unity", "RenderDoc", "Nsight Graphics"],
       "location": "Staines, UK",
       "start": "2025-07",
       "end": "",
@@ -32,6 +37,11 @@
       "role": "Game Client Development Intern",
       "org": "Tencent",
       "headline": "Unreal Engine 5 rendering and UI for Apple Vision Pro. Passing ASTC textures to the native visionOS renderer cut VRAM use by 40%.",
+      "impact": [
+        { "value": "40%", "label": "less VRAM by passing ASTC-compressed textures to the native visionOS renderer" },
+        { "value": "UE5", "label": "source changes so UMG UIs work with Vision Pro eye-gaze and pinch" }
+      ],
+      "stack": ["C++", "Unreal Engine 5", "visionOS", "RealityKit", "RenderDoc"],
       "location": "London, UK",
       "start": "2024-09",
       "end": "2025-07",
@@ -48,12 +58,32 @@
     {
       "role": "Software Developer (Unreal Engine)",
       "org": "Pole To Win",
-      "headline": "A C++ engine with Lua scripting and its own input, debugger and profiler modules, plus gameplay systems for an Android multiplayer RTS in Unreal.",
+      "headline": "Cut an Android game's APK from 1 GB to 45 MB with runtime-mounted PAK files, mentored engineers new to Unreal, and built C++ engine modules with Lua scripting.",
+      "impact": [
+        { "value": "1 GB → 45 MB", "label": "APK size, by streaming game content as PAK files mounted at runtime" },
+        { "value": "Mentor", "label": "onboarded engineers and technical artists who were new to Unreal Engine" },
+        { "value": "3", "label": "engine modules built in C++: input, debugger and profiler" }
+      ],
+      "caseStudy": {
+        "title": "How the APK went from 1 GB to 45 MB",
+        "challenge": "The APK was too large to upload to the Play Store, and load times were long.",
+        "insight": "PUBG Mobile ships multi-gigabyte maps from an APK of around 83 MB, so its content had to be downloaded on demand. I set out to do the same.",
+        "approach": [
+          "Packaged gameplay, lobby, shop and level content as PAK files that are downloaded and mounted at runtime.",
+          "Replaced hard references with soft references, so assets load asynchronously when needed and unload when they are not."
+        ],
+        "results": [
+          "The APK dropped from 1 GB to 45 MB. It now ships only the main menu and the module that downloads everything else.",
+          "Loading and unloading assets on demand lowered RAM usage.",
+          "Loading only the PAK files in use improved cache hit rates."
+        ]
+      },
+      "stack": ["C++", "Unreal Engine", "Lua", "Android", "Multithreading"],
       "location": "Hyderabad, India",
       "start": "2021-03",
       "end": "2023-09",
       "period": "Mar 2021 – Sep 2023",
-      "summary": "Engine and gameplay programming across three projects, moving from Unity to Unreal Engine and C++.",
+      "summary": "Engine, gameplay and build-size work across three projects in Unreal Engine and C++.",
       "groups": [
         {
           "title": "Game engine",
@@ -67,6 +97,7 @@
         {
           "title": "Mobile RTS game",
           "points": [
+            "Cut the APK from 1 GB to 45 MB by packaging gameplay, lobby, shop and level content as PAK files mounted at runtime and loaded asynchronously through soft references. On-demand loading also lowered RAM usage and improved cache hit rates.",
             "Implemented the gameplay framework and engine-side systems for movement, collision and game state in Unreal Engine and C++.",
             "Worked on gameplay systems, UI and shaders for an Android multiplayer title.",
             "Built an Unreal plugin with UPL to integrate an ad SDK, designed so another SDK can be swapped in with minimal code changes.",
@@ -100,9 +131,9 @@
     { "course": "Bachelor of Engineering, Computer Engineering", "org": "Sagar Institute of Research & Technology, Bhopal, India", "period": "2016 – 2020" }
   ],
   "achievements": [
-    { "title": "Patent application co-author", "detail": "Rendering performance optimization, Samsung Electronics." },
-    { "title": "1st place, Smart India Hackathon 2020", "detail": "Led the winning team." },
-    { "title": "10th worldwide, Decentraland Game Jam 2.0", "detail": "Global ranking across all entries." }
+    { "title": "Patent application co-author", "detail": "Rendering performance optimization, Samsung Electronics.", "kind": "professional" },
+    { "title": "1st place, Smart India Hackathon 2020", "detail": "Led the winning team.", "kind": "personal" },
+    { "title": "10th worldwide, Decentraland Game Jam 2.0", "detail": "Global ranking across all entries.", "kind": "personal" }
   ],
   "testimonials": [
     {

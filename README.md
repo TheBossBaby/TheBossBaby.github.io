@@ -48,7 +48,13 @@ PORTFOLIO_UPDATE.md   how to update Project V after each engine PR
 
 ## Common edits
 
-**Home page vs CV page.** The home page stays short on purpose. About shows the two `about` paragraphs from `site.json` and the `coreSkills` row. Experience shows one line per role, taken from each role's `headline`. Everything else in `career.json` (`profile`, every bullet in `points` and `groups`, all skill groups) appears only on `/cv/`. That page has a "Save as PDF" button that uses a print stylesheet tuned for A4.
+**Home page vs CV page.** The home page stays short on purpose and follows the order a hiring manager reads in:
+
+1. **Professional work** shows one card per role that has an `impact` list in `career.json`: the role, its `summary`, its headline numbers (`impact`: `{ value, label }`) and its `stack`. Roles without `impact` appear on one "Earlier" line.
+2. **Personal projects** shows `projects.json`, then achievements whose `kind` is `"personal"`. Professional achievements, such as the patent application, belong in a role's `impact`.
+3. **About** shows the two `about` paragraphs from `site.json`, the `coreSkills` row and education.
+
+Everything else in `career.json` (`profile`, every bullet in `points` and `groups`, all skill groups, all achievements) appears only on `/cv/`. That page has a "Save as PDF" button that uses a print stylesheet tuned for A4.
 
 **Add a project.** Add an object to `data/projects.json`. Copy an existing entry as a template. The order in the file is the order on the page. Exactly one project can have `"featured": true`; it gets the large card at the top.
 

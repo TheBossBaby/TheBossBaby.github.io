@@ -12,7 +12,7 @@ function person(ctx) {
     '@id': personId(ctx),
     name: site.name,
     jobTitle: site.role,
-    description: site.intro,
+    description: [].concat(site.intro).join(' '),
     url: ctx.abs('/'),
     image: ctx.abs(site.portrait.src),
     address: { '@type': 'PostalAddress', addressCountry: site.location },

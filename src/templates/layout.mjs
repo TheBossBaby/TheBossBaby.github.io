@@ -4,8 +4,8 @@ import { analyticsScripts, consentBanner, consentFooterLink } from './analytics.
 
 const NAV = [
   { label: 'Work', hash: 'work' },
+  { label: 'Projects', hash: 'projects' },
   { label: 'About', hash: 'about' },
-  { label: 'Experience', hash: 'experience' },
   { label: 'Contact', hash: 'contact' },
   { label: 'CV', href: '/cv/' },
 ];
