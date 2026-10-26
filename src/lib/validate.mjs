@@ -85,6 +85,11 @@ export function validate({ site, projects, career }, root) {
     const where = `career.json experience[${i}] "${j.org || '?'}"`;
     need(j, ['role', 'org', 'period', 'summary', 'headline'], where);
     if (!j.points?.length && !j.groups?.length) err(where, 'needs "points" or "groups"');
+    (j.impact || []).forEach((m, k) => need(m, ['value', 'label'], `${where} impact[${k}]`));
+  });
+  (career.achievements || []).forEach((a, i) => {
+    need(a, ['title'], `career.json achievements[${i}]`);
+    if (a.kind && !['professional', 'personal'].includes(a.kind)) err(`career.json achievements[${i}]`, 'kind must be "professional" or "personal"');
   });
   if ((career.experience || []).filter((j) => j.current).length > 1) err('career.json', 'only one role can be "current"');
   (career.testimonials || []).forEach((t, i) => {

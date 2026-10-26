@@ -38,7 +38,7 @@
       "Skybox",
       "Compute pipeline that ray-marches light paths through curved spacetime to render the wormhole's gravitational lensing"
     ],
-    "tech": ["C++20", "Vulkan 1.3", "CMake", "EnTT", "GLFW", "Assimp", "spdlog"],
+    "tech": ["C++20", "Vulkan 1.3", "CMake", "GLM", "EnTT", "GLFW", "Assimp", "spdlog"],
     "image": {
       "src": "/assets/img/projects/project-v-1280.webp",
       "srcSmall": "/assets/img/projects/project-v-800.webp",

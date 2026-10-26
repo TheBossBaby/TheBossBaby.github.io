@@ -58,23 +58,65 @@ function featuredProject(ctx, p) {
   </article>`;
 }
 
-function work(ctx) {
-  const featured = ctx.projects.find((p) => p.featured);
-  const rest = ctx.projects.filter((p) => p !== featured);
+// Professional work comes first: it is what a hiring manager weighs most.
+// Client work is under NDA, so each card shows the role and its measured outcomes.
+function professionalCard(j) {
+  return html`<article class="${j.current ? 'pro-card is-current' : 'pro-card'}">
+    <header class="pro-head">
+      <p class="pro-org">${j.org}${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}</p>
+      <h3 class="pro-role">${j.role}</h3>
+      <p class="pro-when mono">${j.period}${j.location ? ` · ${j.location}` : ''}</p>
+    </header>
+    <p class="pro-summary">${j.summary}</p>
+    <dl class="pro-impact">
+      ${j.impact.map((m) => html`<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`)}
+    </dl>
+    ${j.stack?.length ? techList(j.stack, `${j.org} stack`) : ''}
+  </article>`;
+}
+
+function professional(ctx) {
+  const { career } = ctx;
+  const featured = career.experience.filter((j) => j.impact?.length);
+  const earlier = career.experience.filter((j) => !j.impact?.length);
   return html`<section id="work" class="section" aria-labelledby="work-title">
   <div class="container">
-    ${sectionHead({ id: 'work', eyebrow: 'Selected work', title: 'Renderers, engines and games', lede: 'Everything here is built from scratch in C++. No middleware between my code and the GPU.' })}
+    ${sectionHead({ id: 'work', eyebrow: 'Professional work', title: `Shipped at ${featured.map((j) => j.org).join(', ').replace(/, ([^,]*)$/, ' and $1')}`, lede: 'Performance, rendering and engine work on commercial projects. The code is under NDA, so these are the measured outcomes.' })}
+    <div class="pro-grid">${featured.map(professionalCard)}</div>
+    ${earlier.length
+      ? html`<p class="pro-earlier">Earlier: ${earlier.map((j, i) => html`${i ? '; ' : ''}<strong>${j.role}</strong> at ${j.org}, ${j.period}`)}.</p>`
+      : ''}
+    <div class="actions">
+      <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>Every role in detail on the CV</span>${icon('arrowRight', { size: 18 })}</a>
+    </div>
+  </div>
+</section>`;
+}
+
+function personal(ctx) {
+  const featured = ctx.projects.find((p) => p.featured);
+  const rest = ctx.projects.filter((p) => p !== featured);
+  const awards = ctx.career.achievements.filter((a) => a.kind === 'personal');
+  return html`<section id="projects" class="section section-alt" aria-labelledby="projects-title">
+  <div class="container">
+    ${sectionHead({ id: 'projects', eyebrow: 'Personal projects', title: 'Engines and renderers I build outside work', lede: 'C++ on Vulkan, OpenGL and the PS5 graphics API, using focused libraries such as GLM, EnTT, GLFW and Assimp rather than a commercial engine. Some began as MSc coursework at Newcastle University.' })}
     ${featured ? featuredProject(ctx, featured) : ''}
     <div class="grid">
       ${rest.map((p) => projectCard(ctx, p))}
     </div>
+    ${awards.length
+      ? html`<div class="awards">
+      <h3 class="mini-head">Personal achievements</h3>
+      <ul class="awards-list">${awards.map((a) => html`<li>${icon('award', { size: 20 })}<span><strong>${a.title}</strong><span>${a.detail}</span></span></li>`)}</ul>
+    </div>`
+      : ''}
   </div>
 </section>`;
 }
 
 function about(ctx) {
   const { site, career } = ctx;
-  return html`<section id="about" class="section section-alt" aria-labelledby="about-title">
+  return html`<section id="about" class="section" aria-labelledby="about-title">
   <div class="container about">
     <figure class="portrait">
       ${image(ctx, site.portrait, { sizes: '(min-width: 900px) 380px, 80vw' })}
@@ -85,43 +127,11 @@ function about(ctx) {
       <div class="prose">${site.about.map((para) => html`<p>${para}</p>`)}</div>
       <h3 class="mini-head">Core skills</h3>
       ${techList(career.coreSkills, 'Core skills')}
+      <h3 class="mini-head">Education</h3>
+      <ul class="plain education">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}${e.period ? ` · ${e.period}` : ''}</span></li>`)}</ul>
       <div class="actions">
         <a class="btn btn-ghost" href="${ctx.url('/cv/')}"><span>Full CV and skills</span>${icon('arrowRight', { size: 18 })}</a>
       </div>
-    </div>
-  </div>
-</section>`;
-}
-
-// Home shows one line per role; the CV page has every bullet.
-function experience(ctx) {
-  const { career } = ctx;
-  return html`<section id="experience" class="section" aria-labelledby="experience-title">
-  <div class="container">
-    ${sectionHead({ id: 'experience', eyebrow: 'Experience', title: 'Where I have shipped' })}
-    <div class="experience">
-      <ol class="roles">
-        ${career.experience.map((j) => html`<li class="${j.current ? 'role is-current' : 'role'}">
-          <p class="role-period mono">${j.period}</p>
-          <div>
-            <h3 class="role-title">${j.role} <span class="at">at ${j.org}</span>${j.current ? html` <span class="badge badge-complete">Current</span>` : ''}</h3>
-            <p class="role-headline">${j.headline}</p>
-          </div>
-        </li>`)}
-      </ol>
-      <aside class="side-cards">
-        <div class="panel">
-          <h3 class="mini-head">Education</h3>
-          <ul class="plain">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}</span></li>`)}</ul>
-        </div>
-        <div class="panel">
-          <h3 class="mini-head">Recognition</h3>
-          <ul class="plain">${career.achievements.map((a) => html`<li><strong>${a.title}</strong></li>`)}</ul>
-        </div>
-      </aside>
-    </div>
-    <div class="actions">
-      <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>See the full CV</span>${icon('arrowRight', { size: 18 })}</a>
     </div>
   </div>
 </section>`;
@@ -188,7 +198,7 @@ export function renderHome(ctx) {
     description: site.seo.description,
     jsonLd: homeJsonLd(ctx),
     bodyClass: 'page-home',
-    main: html`${hero(ctx)}${work(ctx)}${about(ctx)}${experience(ctx)}${testimonials(ctx)}${contact(ctx)}`,
+    main: html`${hero(ctx)}${professional(ctx)}${personal(ctx)}${about(ctx)}${testimonials(ctx)}${contact(ctx)}`,
     scripts: html`<script src="${ctx.asset('js/hero.js')}" defer></script>`,
   });
 }
