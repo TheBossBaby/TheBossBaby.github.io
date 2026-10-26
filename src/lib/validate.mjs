@@ -87,6 +87,10 @@ export function validate({ site, projects, career }, root) {
     if (!j.points?.length && !j.groups?.length) err(where, 'needs "points" or "groups"');
     (j.impact || []).forEach((m, k) => need(m, ['value', 'label'], `${where} impact[${k}]`));
     if (j.caseStudy) need(j.caseStudy, ['title', 'challenge', 'approach', 'results'], `${where} caseStudy`);
+    if (j.path) { need(j.path, ['org', 'label'], `${where} path`); need(j, ['start'], where); }
+  });
+  (career.education || []).forEach((e, i) => {
+    if (e.path) { need(e.path, ['org', 'label'], `career.json education[${i}] path`); need(e, ['start', 'end'], `career.json education[${i}]`); }
   });
   (career.achievements || []).forEach((a, i) => {
     need(a, ['title'], `career.json achievements[${i}]`);

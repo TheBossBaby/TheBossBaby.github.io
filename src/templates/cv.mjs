@@ -13,7 +13,7 @@ function job(j) {
   return html`<article class="cv-item">
     <header class="cv-item-head">
       <h3>${j.role} <span class="at">at ${j.org}</span></h3>
-      <p class="mono cv-when">${j.period}${j.location ? html` · ${j.location}` : ''}</p>
+      <p class="mono cv-when">${j.period}${j.location ? html` · ${j.location}` : ''}${j.context ? html` · ${j.context}` : ''}</p>
     </header>
     <p class="cv-item-summary">${j.summary}</p>
     ${j.points?.length ? bullets(j.points) : ''}

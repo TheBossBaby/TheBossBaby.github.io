@@ -13,6 +13,7 @@
     {
       "role": "Game Optimization Engineer",
       "org": "Samsung Electronics",
+      "path": { "org": "Samsung", "label": "Game Optimization Engineer" },
       "headline": "Unity and Unreal optimization plugins and tooling for an upcoming Samsung flagship. A binary IPC protocol cut bandwidth by 32%, and I co-authored a patent application.",
       "impact": [
         { "value": "32%", "label": "less inter-process bandwidth after replacing JSON with a binary protocol" },
@@ -36,6 +37,8 @@
     {
       "role": "Game Client Development Intern",
       "org": "Tencent",
+      "context": "After MSc",
+      "path": { "org": "Tencent", "label": "UE5 on Apple Vision Pro" },
       "headline": "Unreal Engine 5 rendering and UI for Apple Vision Pro. Passing ASTC textures to the native visionOS renderer cut VRAM use by 40%.",
       "impact": [
         { "value": "40%", "label": "less VRAM by passing ASTC-compressed textures to the native visionOS renderer" },
@@ -58,6 +61,7 @@
     {
       "role": "Software Developer (Unreal Engine)",
       "org": "Pole To Win",
+      "path": { "org": "Pole To Win", "label": "Unreal & C++ developer" },
       "headline": "Cut an Android game's APK from 1 GB to 45 MB with runtime-mounted PAK files, mentored engineers new to Unreal, and built C++ engine modules with Lua scripting.",
       "impact": [
         { "value": "1 GB → 45 MB", "label": "APK size, by streaming game content as PAK files mounted at runtime" },
@@ -115,6 +119,7 @@
     {
       "role": "Freelance Game Developer (Unity)",
       "org": "Upwork",
+      "path": { "org": "Freelance", "label": "Unity games for clients" },
       "headline": "Unity games for international clients, with gameplay mechanics and third-party SDK integrations.",
       "location": "Bhopal, India",
       "start": "2018-12",
@@ -127,7 +132,7 @@
     }
   ],
   "education": [
-    { "course": "MSc Computer Games Engineering, Distinction", "org": "Newcastle University, UK", "period": "2023 – 2024" },
+    { "course": "MSc Computer Games Engineering, Distinction", "org": "Newcastle University, UK", "period": "2023 – 2024", "start": "2023", "end": "2024", "path": { "org": "Newcastle University", "label": "MSc, Distinction" } },
     { "course": "Bachelor of Engineering, Computer Engineering", "org": "Sagar Institute of Research & Technology, Bhopal, India", "period": "2016 – 2020" }
   ],
   "achievements": [
