@@ -74,7 +74,7 @@
         ],
         "results": [
           "The APK dropped from 1 GB to 45 MB. It now ships only the main menu and the module that downloads everything else.",
-          "Loading and unloading assets on demand lowered CPU usage.",
+          "Loading and unloading assets on demand lowered RAM usage.",
           "Loading only the PAK files in use improved cache hit rates."
         ]
       },
@@ -97,7 +97,7 @@
         {
           "title": "Mobile RTS game",
           "points": [
-            "Cut the APK from 1 GB to 45 MB by packaging gameplay, lobby, shop and level content as PAK files mounted at runtime and loaded asynchronously through soft references. On-demand loading also lowered CPU usage and improved cache hit rates.",
+            "Cut the APK from 1 GB to 45 MB by packaging gameplay, lobby, shop and level content as PAK files mounted at runtime and loaded asynchronously through soft references. On-demand loading also lowered RAM usage and improved cache hit rates.",
             "Implemented the gameplay framework and engine-side systems for movement, collision and game state in Unreal Engine and C++.",
             "Worked on gameplay systems, UI and shaders for an Android multiplayer title.",
             "Built an Unreal plugin with UPL to integrate an ad SDK, designed so another SDK can be swapped in with minimal code changes.",
