@@ -91,14 +91,14 @@ function caseStudy(cs) {
   </details>`;
 }
 
-// One dated line from first job to now, study included, so the order of
+// One dated line from now back to the first job, study included, so the order of
 // events (industry, MSc, then Tencent) is clear before the detail cards.
 function careerPath(career) {
   const year = (d) => (d ? String(d).slice(0, 4) : '');
   const steps = [
     ...career.experience.filter((j) => j.path).map((j) => ({ ...j.path, start: j.start, end: j.end, current: j.current })),
     ...career.education.filter((e) => e.path).map((e) => ({ ...e.path, start: e.start, end: e.end, study: true })),
-  ].sort((a, b) => String(a.start).localeCompare(String(b.start)));
+  ].sort((a, b) => String(b.start).localeCompare(String(a.start))); // newest first, like the cards
   if (steps.length < 2) return '';
   return html`<ol class="career-path" aria-label="Career path" style="--steps: ${steps.length}">
     ${steps.map((s) => html`<li class="${['path-step', s.current && 'is-current', s.study && 'is-study'].filter(Boolean).join(' ')}">

@@ -438,12 +438,12 @@ main:focus { outline: none; }
 .pro-case-body .bullets { margin-top: 0; gap: 6px; }
 #work .actions { margin-top: 28px; }
 
-/* Career path: one dated line from first job to now. Study steps are blue
+/* Career path: one dated line, newest first. Study steps are blue
    (matching the "After MSc" badge); the current role is the accent dot. */
 .career-path { list-style: none; position: relative; display: grid; grid-template-columns: repeat(var(--steps, 5), minmax(0, 1fr)); margin: 0 0 clamp(28px, 4vw, 40px); }
 .career-path::before {
   content: ''; position: absolute; left: 7px; right: 0; top: 6px; height: 2px; border-radius: 2px;
-  background: linear-gradient(90deg, var(--border-strong), var(--border-strong) 60%, var(--accent));
+  background: linear-gradient(90deg, var(--accent), var(--border-strong) 40%, var(--border-strong));
 }
 .path-step { position: relative; display: grid; gap: 3px; align-content: start; padding: 26px 16px 0 0; }
 .path-step::after {
@@ -459,7 +459,7 @@ main:focus { outline: none; }
 .path-label { font-size: 0.88rem; color: var(--text-muted); line-height: 1.35; }
 @media (max-width: 759.98px) {
   .career-path { grid-template-columns: 1fr; }
-  .career-path::before { left: 6px; right: auto; top: 7px; bottom: 16px; width: 2px; height: auto; background: linear-gradient(180deg, var(--border-strong), var(--border-strong) 60%, var(--accent)); }
+  .career-path::before { left: 6px; right: auto; top: 7px; bottom: 16px; width: 2px; height: auto; background: linear-gradient(180deg, var(--accent), var(--border-strong) 40%, var(--border-strong)); }
   .path-step { padding: 0 0 16px 30px; }
 }
 

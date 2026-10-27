@@ -50,7 +50,7 @@ PORTFOLIO_UPDATE.md   how to update Project V after each engine PR
 
 **Home page vs CV page.** The home page stays short on purpose and follows the order a hiring manager reads in:
 
-1. **Professional work** shows one card per role that has an `impact` list in `career.json`: the role, its `summary`, its headline numbers (`impact`: `{ value, label }`) and its `stack`. Above the cards, a dated career path lists every role and education entry that has a `path` (`{ org, label }`), oldest first, so gaps such as the MSc year are explained. A role's optional `context` (for example "After MSc") shows as a tag on its card and on the CV.
+1. **Professional work** shows one card per role that has an `impact` list in `career.json`: the role, its `summary`, its headline numbers (`impact`: `{ value, label }`) and its `stack`. Above the cards, a dated career path lists every role and education entry that has a `path` (`{ org, label }`), newest first, so gaps such as the MSc year are explained. A role's optional `context` (for example "After MSc") shows as a tag on its card and on the CV.
 2. **Personal projects** shows `projects.json`, then achievements whose `kind` is `"personal"`. Professional achievements, such as the patent application, belong in a role's `impact`.
 3. **About** shows the two `about` paragraphs from `site.json`, the `coreSkills` row and education.
 
