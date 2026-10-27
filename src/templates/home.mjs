@@ -63,7 +63,7 @@ function featuredProject(ctx, p) {
 function professionalCard(j) {
   return html`<article class="${j.current ? 'pro-card is-current' : 'pro-card'}">
     <header class="pro-head">
-      <p class="pro-org">${j.org}${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}</p>
+      <p class="pro-org">${j.org}${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}${j.context ? html`<span class="badge badge-note">${j.context}</span>` : ''}</p>
       <h3 class="pro-role">${j.role}</h3>
       <p class="pro-when mono">${j.period}${j.location ? ` · ${j.location}` : ''}</p>
     </header>
@@ -91,17 +91,32 @@ function caseStudy(cs) {
   </details>`;
 }
 
+// One dated line from now back to the first job, study included, so the order of
+// events (industry, MSc, then Tencent) is clear before the detail cards.
+function careerPath(career) {
+  const year = (d) => (d ? String(d).slice(0, 4) : '');
+  const steps = [
+    ...career.experience.filter((j) => j.path).map((j) => ({ ...j.path, start: j.start, end: j.end, current: j.current })),
+    ...career.education.filter((e) => e.path).map((e) => ({ ...e.path, start: e.start, end: e.end, study: true })),
+  ].sort((a, b) => String(b.start).localeCompare(String(a.start))); // newest first, like the cards
+  if (steps.length < 2) return '';
+  return html`<ol class="career-path" aria-label="Career path" style="--steps: ${steps.length}">
+    ${steps.map((s) => html`<li class="${['path-step', s.current && 'is-current', s.study && 'is-study'].filter(Boolean).join(' ')}">
+      <span class="path-years mono">${year(s.start)}–${s.current ? 'now' : year(s.end)}</span>
+      <span class="path-org">${s.org}</span>
+      <span class="path-label">${s.label}</span>
+    </li>`)}
+  </ol>`;
+}
+
 function professional(ctx) {
   const { career } = ctx;
   const featured = career.experience.filter((j) => j.impact?.length);
-  const earlier = career.experience.filter((j) => !j.impact?.length);
   return html`<section id="work" class="section" aria-labelledby="work-title">
   <div class="container">
     ${sectionHead({ id: 'work', eyebrow: 'Professional work', title: `Shipped at ${featured.map((j) => j.org).join(', ').replace(/, ([^,]*)$/, ' and $1')}`, lede: 'Performance, rendering and engine work on commercial projects. The code is under NDA, so these are the measured outcomes.' })}
+    ${careerPath(career)}
     <div class="pro-grid">${featured.map(professionalCard)}</div>
-    ${earlier.length
-      ? html`<p class="pro-earlier">Earlier: ${earlier.map((j, i) => html`${i ? '; ' : ''}<strong>${j.role}</strong> at ${j.org}, ${j.period}`)}.</p>`
-      : ''}
     <div class="actions">
       <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>Every role in detail on the CV</span>${icon('arrowRight', { size: 18 })}</a>
     </div>

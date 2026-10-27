@@ -209,6 +209,7 @@ main:focus { outline: none; }
 }
 .badge-wip { color: var(--wip); background: var(--wip-soft); border-color: rgb(124 196 255 / 0.35); }
 .badge-complete { color: var(--ok); background: var(--ok-soft); border-color: rgb(95 224 160 / 0.35); }
+.badge-note { color: var(--wip); background: var(--wip-soft); border-color: rgb(124 196 255 / 0.35); }
 .pulse {
   width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex: none;
   box-shadow: 0 0 0 0 currentColor; animation: pulse 2.2s infinite;
@@ -435,9 +436,32 @@ main:focus { outline: none; }
 .pro-case-body strong { color: var(--text); font-weight: 600; }
 .pro-case-body h4 { margin-top: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
 .pro-case-body .bullets { margin-top: 0; gap: 6px; }
-.pro-earlier { margin-top: 24px; color: var(--text-dim); font-size: 0.95rem; }
-.pro-earlier strong { color: var(--text-muted); font-weight: 500; }
 #work .actions { margin-top: 28px; }
+
+/* Career path: one dated line, newest first. Study steps are blue
+   (matching the "After MSc" badge); the current role is the accent dot. */
+.career-path { list-style: none; position: relative; display: grid; grid-template-columns: repeat(var(--steps, 5), minmax(0, 1fr)); margin: 0 0 clamp(28px, 4vw, 40px); }
+.career-path::before {
+  content: ''; position: absolute; left: 7px; right: 0; top: 6px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--border-strong) 40%, var(--border-strong));
+}
+.path-step { position: relative; display: grid; gap: 3px; align-content: start; padding: 26px 16px 0 0; }
+.path-step::after {
+  content: ''; position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--border-strong);
+}
+.path-step.is-study::after { border-color: var(--wip); background: var(--wip-soft); }
+.path-step.is-current::after { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+.path-years { font-size: 0.75rem; color: var(--text-dim); }
+.path-step.is-study .path-years { color: var(--wip); }
+.path-step.is-current .path-years { color: var(--accent-strong); }
+.path-org { font-weight: 600; color: var(--text); line-height: 1.3; }
+.path-label { font-size: 0.88rem; color: var(--text-muted); line-height: 1.35; }
+@media (max-width: 759.98px) {
+  .career-path { grid-template-columns: 1fr; }
+  .career-path::before { left: 6px; right: auto; top: 7px; bottom: 16px; width: 2px; height: auto; background: linear-gradient(180deg, var(--accent), var(--border-strong) 40%, var(--border-strong)); }
+  .path-step { padding: 0 0 16px 30px; }
+}
 
 /* ---------- Personal achievements ---------- */
 .awards { margin-top: clamp(40px, 5vw, 56px); }
