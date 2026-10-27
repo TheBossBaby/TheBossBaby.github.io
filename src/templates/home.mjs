@@ -60,7 +60,7 @@ function featuredProject(ctx, p) {
 
 // Professional work comes first: it is what a hiring manager weighs most.
 // Client work is under NDA, so each card shows the role and its measured outcomes.
-function professionalCard(j) {
+function professionalCard(ctx, j) {
   return html`<article class="${j.current ? 'pro-card is-current' : 'pro-card'}">
     <header class="pro-head">
       <p class="pro-org">${j.org}${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}${j.context ? html`<span class="badge badge-note">${j.context}</span>` : ''}</p>
@@ -71,24 +71,11 @@ function professionalCard(j) {
     <dl class="pro-impact">
       ${j.impact.map((m) => html`<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`)}
     </dl>
-    ${j.caseStudy ? caseStudy(j.caseStudy) : ''}
+    ${j.caseStudy
+      ? html`<a class="pro-case-link" href="${ctx.url(ctx.caseStudyPath(j.caseStudy))}"><span><span class="pro-case-kicker">Case study</span>${j.caseStudy.title}</span>${icon('arrowRight', { size: 16 })}</a>`
+      : ''}
     ${j.stack?.length ? techList(j.stack, `${j.org} stack`) : ''}
   </article>`;
-}
-
-// The story behind a headline number, collapsed by default to keep the card short.
-function caseStudy(cs) {
-  return html`<details class="pro-case">
-    <summary>${cs.title}</summary>
-    <div class="pro-case-body">
-      <p><strong>Challenge.</strong> ${cs.challenge}</p>
-      ${cs.insight ? html`<p><strong>Insight.</strong> ${cs.insight}</p>` : ''}
-      <h4>Approach</h4>
-      <ul class="bullets">${cs.approach.map((a) => html`<li>${a}</li>`)}</ul>
-      <h4>Results</h4>
-      <ul class="bullets">${cs.results.map((r) => html`<li>${r}</li>`)}</ul>
-    </div>
-  </details>`;
 }
 
 // One dated line from now back to the first job, study included, so the order of
@@ -116,7 +103,7 @@ function professional(ctx) {
   <div class="container">
     ${sectionHead({ id: 'work', eyebrow: 'Professional work', title: `Shipped at ${featured.map((j) => j.org).join(', ').replace(/, ([^,]*)$/, ' and $1')}`, lede: 'Performance, rendering and engine work on commercial projects. The code is under NDA, so these are the measured outcomes.' })}
     ${careerPath(career)}
-    <div class="pro-grid">${featured.map(professionalCard)}</div>
+    <div class="pro-grid">${featured.map((j) => professionalCard(ctx, j))}</div>
     <div class="actions">
       <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>Every role in detail on the CV</span>${icon('arrowRight', { size: 18 })}</a>
     </div>

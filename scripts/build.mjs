@@ -11,6 +11,7 @@ import { validate } from '../src/lib/validate.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderProject, renderNotFound } from '../src/templates/project.mjs';
 import { renderCv } from '../src/templates/cv.mjs';
+import { renderCaseStudy } from '../src/templates/case-study.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = join(ROOT, 'dist');
@@ -75,11 +76,14 @@ export function build({ dev = false, quiet = false } = {}) {
     abs: (path) => `${origin}${base}${path}`,
     asset: (rel) => `${base}/assets/${rel}?v=${assetVersions[rel]}`,
     projectPath: (p) => `/projects/${p.slug}/`,
+    caseStudyPath: (cs) => `/case-studies/${cs.slug}/`,
   };
+  const caseStudyJobs = data.career.experience.filter((j) => j.caseStudy);
 
   // Pages
   write('index.html', renderHome(ctx));
   data.projects.forEach((p, i) => write(`projects/${p.slug}/index.html`, renderProject(ctx, p, i)));
+  caseStudyJobs.forEach((j) => write(`case-studies/${j.caseStudy.slug}/index.html`, renderCaseStudy(ctx, j)));
   write('cv/index.html', renderCv(ctx));
   write('404.html', renderNotFound(ctx));
 
@@ -94,6 +98,7 @@ export function build({ dev = false, quiet = false } = {}) {
     { loc: ctx.abs('/'), lastmod: today, priority: '1.0' },
     { loc: ctx.abs('/cv/'), lastmod: today, priority: '0.8' },
     ...data.projects.map((p) => ({ loc: ctx.abs(ctx.projectPath(p)), lastmod: p.updated || today, priority: p.featured ? '0.9' : '0.7' })),
+    ...caseStudyJobs.map((j) => ({ loc: ctx.abs(ctx.caseStudyPath(j.caseStudy)), lastmod: today, priority: '0.8' })),
   ];
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -117,7 +122,7 @@ ${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><pri
   }, null, 2));
 
   if (!quiet) {
-    console.log(`Built ${data.projects.length + 3} pages to dist/ in ${Date.now() - started} ms${dev ? ' (dev)' : ''}`);
+    console.log(`Built ${data.projects.length + caseStudyJobs.length + 3} pages to dist/ in ${Date.now() - started} ms${dev ? ' (dev)' : ''}`);
   }
   return { base };
 }

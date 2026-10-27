@@ -348,6 +348,9 @@ main:focus { outline: none; }
   background: var(--surface-2); border: 1px solid var(--border-strong); color: var(--text-muted);
 }
 .roadmap li:first-child::before { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+/* Numbered steps of a case study: all equal, unlike a roadmap's "next" item. */
+.roadmap.steps li { padding-bottom: 22px; }
+.roadmap.steps li::before { background: var(--accent-soft); border-color: rgb(255 138 61 / 0.5); color: var(--accent-strong); }
 .roadmap li:not(:last-child)::after { content: ''; position: absolute; left: 13.5px; top: 30px; bottom: 2px; width: 1px; background: var(--border-strong); }
 
 /* ---------- Cards ---------- */
@@ -418,24 +421,21 @@ main:focus { outline: none; }
 .pro-summary { color: var(--text-muted); }
 .pro-impact { display: grid; gap: 14px; margin: 0; padding-top: 16px; border-top: 1px solid var(--border); }
 .pro-impact > div { display: flex; flex-direction: column-reverse; gap: 4px; }
-.pro-impact dd { margin: 0; font-size: var(--step-2); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); }
+.pro-impact dd { text-wrap: balance; margin: 0; font-size: var(--step-2); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); }
 .pro-impact dt { color: var(--text-muted); font-size: 0.92rem; line-height: 1.45; }
 .pro-card .tags { margin-top: auto; }
-.pro-case { border-top: 1px solid var(--border); padding-top: 14px; }
-/* An open case study shouldn't stretch the neighbouring cards. */
-.pro-grid:has(.pro-case[open]) { align-items: start; }
-.pro-case summary {
-  cursor: pointer; list-style: none; width: fit-content;
-  font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-strong);
+/* Link from a role card to its case study page. */
+.pro-case-link {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; border-radius: var(--radius-sm); text-decoration: none;
+  background: var(--accent-soft); border: 1px solid rgb(255 138 61 / 0.3); color: var(--text);
+  font-weight: 600; line-height: 1.35; transition: border-color 0.2s, background-color 0.2s;
 }
-.pro-case summary::-webkit-details-marker { display: none; }
-.pro-case summary::after { content: ' +'; }
-.pro-case[open] summary::after { content: ' −'; }
-.pro-case summary:hover { color: var(--text); }
-.pro-case-body { display: grid; gap: 10px; margin-top: 14px; color: var(--text-muted); font-size: 0.93rem; line-height: 1.55; }
-.pro-case-body strong { color: var(--text); font-weight: 600; }
-.pro-case-body h4 { margin-top: 6px; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
-.pro-case-body .bullets { margin-top: 0; gap: 6px; }
+.pro-case-link > span { display: grid; gap: 4px; }
+.pro-case-kicker { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-strong); }
+.pro-case-link .icon { flex: none; color: var(--accent-strong); transition: transform 0.25s var(--ease); }
+.pro-case-link:hover { color: var(--text); border-color: var(--accent); background: rgb(255 138 61 / 0.18); }
+.pro-case-link:hover .icon { transform: translateX(4px); }
 #work .actions { margin-top: 28px; }
 
 /* Career path: one dated line, newest first. Study steps are blue
@@ -639,6 +639,29 @@ main:focus { outline: none; }
 }
 
 
+/* ---------- Case study: size diagram ---------- */
+.size-diagram {
+  margin: 0; padding: clamp(20px, 3vw, 32px); display: grid; gap: 22px;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface);
+}
+.size-row { display: grid; gap: 8px; }
+.size-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); }
+.size-head strong { font-family: var(--font-sans); font-size: var(--step-2); font-weight: 600; letter-spacing: -0.02em; text-transform: none; color: var(--text); }
+.size-bar { height: 26px; border-radius: 8px; background: rgb(255 255 255 / 0.04); border: 1px solid var(--border); overflow: hidden; }
+.size-fill { display: block; height: 100%; min-width: 6px; border-radius: 7px; }
+.size-fill.is-before { background: linear-gradient(90deg, rgb(255 138 61 / 0.35), rgb(255 138 61 / 0.75)); }
+.size-fill.is-after { background: var(--ok); }
+.size-note { color: var(--text-muted); font-size: 0.93rem; }
+.size-demand { display: grid; gap: 10px; padding-top: 18px; border-top: 1px dashed var(--border-strong); }
+.pak-list { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.pak-list li {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-strong); color: var(--text); font-weight: 500;
+}
+.pak-list .mono { font-size: 0.7rem; color: var(--wip); padding: 2px 6px; border-radius: 4px; background: var(--wip-soft); }
+.case .size-diagram + .project-layout { margin-top: clamp(36px, 5vw, 56px); }
+.case .project-head { margin-bottom: clamp(24px, 4vw, 36px); }
+
 /* ---------- Video ---------- */
 .video-frame { position: relative; overflow: hidden; background: #000; }
 .video-frame video { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -651,7 +674,7 @@ main:focus { outline: none; }
   margin: 32px 0 0; padding-top: 22px; border-top: 1px solid var(--border); max-width: 760px;
 }
 .metric { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
-.metric dd { margin: 0; font-size: var(--step-3); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--accent-strong); }
+.metric dd { text-wrap: balance; margin: 0; font-size: var(--step-3); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--accent-strong); }
 .metric dt { color: var(--text-dim); font-size: var(--step--1); line-height: 1.35; }
 
 /* ---------- CV page ---------- */

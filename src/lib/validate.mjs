@@ -87,7 +87,11 @@ export function validate({ site, projects, career }, root) {
     need(j, ['role', 'org', 'period', 'summary', 'headline'], where);
     if (!j.points?.length && !j.groups?.length) err(where, 'needs "points" or "groups"');
     (j.impact || []).forEach((m, k) => need(m, ['value', 'label'], `${where} impact[${k}]`));
-    if (j.caseStudy) need(j.caseStudy, ['title', 'challenge', 'approach', 'results'], `${where} caseStudy`);
+    if (j.caseStudy) {
+      need(j.caseStudy, ['slug', 'title', 'summary', 'challenge', 'approach', 'results'], `${where} caseStudy`);
+      if (j.caseStudy.slug && !SLUG.test(j.caseStudy.slug)) err(`${where} caseStudy`, 'slug must be lowercase-kebab-case');
+      if (j.caseStudy.size) need(j.caseStudy.size, ['before', 'after', 'ratio', 'shipped', 'onDemand'], `${where} caseStudy.size`);
+    }
     if (j.path) { need(j.path, ['org', 'label'], `${where} path`); need(j, ['start'], where); }
   });
   (career.education || []).forEach((e, i) => {
