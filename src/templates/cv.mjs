@@ -45,7 +45,7 @@ export function renderCv(ctx) {
   return layout(ctx, {
     path: '/cv/',
     title: `CV | ${site.name}, ${site.role}`,
-    description: `Full CV of ${site.name}: ${career.experience.map((j) => j.org).join(', ')}. ${site.role} with 7 years in C++, Unreal Engine, Unity, Vulkan and OpenGL.`.slice(0, 300),
+    description: `CV of ${site.name}, ${site.role}: ${site.seo.experience}. ${career.experience.map((j) => j.org).join(', ')}.`.slice(0, 300),
     ogType: 'profile',
     jsonLd: cvJsonLd(ctx),
     bodyClass: 'page-cv',
@@ -75,7 +75,7 @@ export function renderCv(ctx) {
       </div>
     </header>
 
-    ${section('profile', 'Profile', html`<p class="cv-profile">${career.profile}</p>`)}
+    ${section('profile', 'Profile', html`<ul class="cv-profile">${[].concat(career.profile).map((line) => html`<li>${line}</li>`)}</ul>`)}
     ${section('experience', 'Experience', career.experience.map(job))}
     ${section('projects', 'Selected projects', projects.map((p) => project(ctx, p)))}
     ${section('skills', 'Skills', html`<dl class="skills">${career.skills.map((g) => html`<div class="skill-row"><dt>${g.group}</dt><dd>${techList(g.items, g.group)}</dd></div>`)}</dl>`)}

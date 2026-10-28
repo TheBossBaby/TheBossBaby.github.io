@@ -10,7 +10,7 @@
   "availability": "Open to Unreal & graphics programming roles",
   "intro": [
     "Game Optimization Engineer @ Samsung Electronics.",
-    "7+ years in C++, Unreal Engine, Unity and Custom engines.",
+    "7+ years in game development, 4+ in Unreal Engine & C++.",
     "GPU profiling and rendering on PC, PS5, Mobile and Vision Pro.",
     "Building a Vulkan 1.3 engine in my own time."
   ],
@@ -47,7 +47,8 @@
   },
   "seo": {
     "title": "Pranav Kushwaha | Game Engine & Graphics Programmer (C++, Unreal, Vulkan)",
-    "description": "Portfolio of Pranav Kushwaha, game engine and graphics programmer with 7 years in C++, Unreal Engine and Unity. Samsung, Tencent, PS5 rendering, a Vulkan 1.3 engine and OpenGL PBR projects.",
+    "description": "Game engine and graphics programmer: 7+ years in game development, 4+ in Unreal Engine and C++. Samsung, Tencent, PS5 rendering and a Vulkan 1.3 engine.",
+    "experience": "7+ years in game development, 4+ in Unreal Engine and C++",
     "ogImage": "/assets/img/og-card.jpg",
     "ogImageAlt": "Pranav Kushwaha, Game Engine & Graphics Programmer: Samsung, Tencent, Pole To Win. C++, Unreal Engine 5, Vulkan.",
     "twitterHandle": "",

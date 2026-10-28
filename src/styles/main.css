@@ -675,7 +675,11 @@ main:focus { outline: none; }
   text-transform: uppercase; color: var(--accent); padding-top: 6px;
 }
 .cv-section-body { display: grid; gap: 34px; min-width: 0; }
-.cv-profile { font-size: var(--step-1); line-height: 1.55; max-width: 68ch; }
+.cv-profile { list-style: none; display: grid; gap: 8px; line-height: 1.55; max-width: 76ch; color: var(--text-muted); }
+.cv-profile li { position: relative; padding-left: 20px; }
+.cv-profile li::before { content: ''; position: absolute; left: 0; top: 0.72em; width: 8px; height: 2px; border-radius: 2px; background: var(--accent); }
+.cv-profile li:first-child { color: var(--text); font-size: var(--step-1); font-weight: 500; }
+.cv-profile li:first-child::before { top: 0.68em; }
 .cv-item-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; }
 .cv-item-head h3 { font-size: var(--step-1); }
 .cv-item-head h3 a { text-decoration: none; }
@@ -715,7 +719,9 @@ main:focus { outline: none; }
   .cv-section { grid-template-columns: 92pt 1fr; gap: 4pt 14pt; padding: 9pt 0; }
   .cv-section-title { font-size: 8pt; padding-top: 2pt; }
   .cv-section-body { gap: 9pt; }
-  .cv-profile { font-size: 10pt; }
+  .cv-profile { font-size: 10pt; gap: 2pt; }
+  .cv-profile li { padding-left: 10pt; }
+  .cv-profile li::before { width: 5pt; top: 0.62em; }
   .cv-item { break-inside: avoid; }
   .cv-item-head h3 { font-size: 10.5pt; }
   .cv-when { font-size: 8.5pt; }
