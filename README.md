@@ -101,7 +101,7 @@ The build validates the data first. A missing image, a duplicate slug, an unsafe
 
 ## Deploying to GitHub Pages
 
-The site lives in `TheBossBaby/TheBossBaby.github.io` on the `main` branch. The old site is kept on the `archive/master` branch and the `archive-master-2026-10-25` tag.
+The site lives in `TheBossBaby/TheBossBaby.github.io` on the `main` branch and is served at <https://pranavkushwaha.co.uk>. The old site is kept on the `archive/master` branch and the `archive-master-2026-10-25` tag.
 
 1. **Settings → General → Default branch**: switch to `main`. The Pages environment only accepts deployments from allowed branches, and the default branch is allowed automatically.
 2. **Settings → Pages → Build and deployment → Source**: choose **GitHub Actions**.
@@ -115,9 +115,33 @@ The site lives in `TheBossBaby/TheBossBaby.github.io` on the `main` branch. The 
 | `<username>.github.io` | `https://<username>.github.io/` | `https://<username>.github.io` |
 | any other name, e.g. `portfolio` | `https://<username>.github.io/portfolio/` | `https://<username>.github.io/portfolio` |
 
-`siteUrl` is the only thing to change. Canonical URLs, the sitemap, Open Graph tags and all internal links are derived from it, including the `/portfolio` sub-path. It is set to `https://thebossbaby.github.io` for the `TheBossBaby/TheBossBaby.github.io` repository.
+`siteUrl` is the only thing to change. Canonical URLs, the sitemap, Open Graph tags and all internal links are derived from it, including the `/portfolio` sub-path. It is set to the custom domain, `https://pranavkushwaha.co.uk`.
 
-For a custom domain, add a `static/CNAME` file containing the domain, configure it under Settings → Pages, and set `siteUrl` to `https://yourdomain.com`.
+### Custom domain
+
+The domain `pranavkushwaha.co.uk` is registered at GoDaddy, which also serves its DNS. Do the steps in this order. Adding the domain to GitHub before pointing DNS at it stops anyone else claiming it for their own Pages site.
+
+1. **Verify the domain.** On GitHub, open your profile **Settings → Pages → Add a domain** and enter `pranavkushwaha.co.uk`. Add the TXT record it shows in GoDaddy DNS, then click **Verify**.
+2. **Set it on the repository.** In the repository, open **Settings → Pages → Custom domain**, enter `pranavkushwaha.co.uk` and save. No `CNAME` file is needed, because a site deployed by a GitHub Actions workflow ignores one.
+3. **Point DNS at GitHub Pages.** In GoDaddy, open **My Products → pranavkushwaha.co.uk → DNS**. Delete any `A` record on `@` (GoDaddy's "Parked" record) and turn off GoDaddy domain forwarding. Then add these records:
+
+   | Type | Name | Value |
+   | --- | --- | --- |
+   | A | `@` | `185.199.108.153` |
+   | A | `@` | `185.199.109.153` |
+   | A | `@` | `185.199.110.153` |
+   | A | `@` | `185.199.111.153` |
+   | AAAA | `@` | `2606:50c0:8000::153` |
+   | AAAA | `@` | `2606:50c0:8001::153` |
+   | AAAA | `@` | `2606:50c0:8002::153` |
+   | AAAA | `@` | `2606:50c0:8003::153` |
+   | CNAME | `www` | `thebossbaby.github.io` |
+
+4. **Turn on HTTPS.** When the DNS check in **Settings → Pages** passes, tick **Enforce HTTPS**. GitHub issues the certificate itself, which can take up to 24 hours.
+
+GitHub then redirects `www.pranavkushwaha.co.uk` and `thebossbaby.github.io` to `https://pranavkushwaha.co.uk` with a permanent redirect that keeps the path. Old links such as `/cv/` or `/projects/project-v/` still work.
+
+To move to another domain later, change `siteUrl` and the custom domain together. Remove the custom domain in Settings before deleting its DNS records, never the other way round.
 
 ## SEO
 
@@ -135,7 +159,7 @@ The site supports Google Analytics 4. It ships with no analytics code until a me
 
 **Turn it on**
 
-1. In [Google Analytics](https://analytics.google.com), open **Admin → Create → Property**, then add a **Web** data stream for `https://thebossbaby.github.io`.
+1. In [Google Analytics](https://analytics.google.com), open **Admin → Create → Property**, then add a **Web** data stream for `https://pranavkushwaha.co.uk`.
 2. Copy the stream's **Measurement ID**. It looks like `G-XXXXXXXXXX`. The old `UA-128634648-1` ID from the previous site belongs to Universal Analytics, which Google shut down in 2023, so it no longer collects data.
 3. Put the ID in `analytics.gaMeasurementId` in `data/site.json` and push to `main`.
 4. Optional: in the data stream, keep **Enhanced measurement** on for scroll depth and outbound clicks. Mark `contact_email` as a key event so recruiters' emails show up as conversions.
