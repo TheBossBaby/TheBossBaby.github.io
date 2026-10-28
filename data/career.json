@@ -1,12 +1,17 @@
 {
-  "profile": "Game engine programmer with 7+ years in game development, including 4+ in Unreal Engine and C++, focused on performance profiling, optimization tooling and engine plugins. Built Unity and Unreal Engine plugins and a plug-and-play optimization toolset for an upcoming Samsung flagship device, profiled games for performance bottlenecks with RenderDoc and Nsight Graphics, and shipped mobile and Apple Vision Pro work. Experienced in OpenGL and Vulkan, and in explaining complex technical topics to cross-functional teams.",
+  "profile": [
+    "7+ years in game development: 4+ in Unreal Engine and C++, 3 in Unity.",
+    "Rendering: from-scratch PBR and deferred renderer on PlayStation 5 and Windows, UE5 rendering source changes for Apple Vision Pro, Vulkan renderer in progress.",
+    "Engines and tooling: proprietary C++ engine built from scratch, 3D scene and ASTC texture pipelines, automated pipelines in Python, pytest and Jenkins.",
+    "GPU profiling in RenderDoc and Nsight Graphics. Shipping on Apple Vision Pro and an upcoming Samsung flagship. Co-authored patent application."
+  ],
   "coreSkills": ["C++", "Unreal Engine 5", "Unity", "Vulkan", "OpenGL", "GLSL", "PS5 (AGC, PSSL)", "ECS", "Multithreading", "RenderDoc", "Nsight Graphics"],
   "skills": [
-    { "group": "Languages", "items": ["C++", "C#", "Lua"] },
+    { "group": "Languages", "items": ["C++", "C#", "Lua", "Python"] },
     { "group": "Graphics", "items": ["Vulkan", "OpenGL", "GLSL", "PlayStation 5 API (AGC, PSSL)", "PBR", "Deferred lighting"] },
     { "group": "Engines", "items": ["Unreal Engine 5", "Unity", "Custom C++ engines"] },
     { "group": "Engine systems", "items": ["Rendering pipelines", "Cross-platform architecture", "ECS", "Multithreading", "GPU & memory profiling"] },
-    { "group": "Tools", "items": ["RenderDoc", "Nsight Graphics", "Razor GPU", "Git", "Perforce"] },
+    { "group": "Tools", "items": ["RenderDoc", "Nsight Graphics", "Razor GPU", "Git", "Perforce", "Jenkins", "pytest"] },
     { "group": "Platforms", "items": ["PC", "PlayStation 5", "Android", "iOS", "Apple Vision Pro"] }
   ],
   "experience": [

@@ -75,7 +75,7 @@ export function renderCv(ctx) {
       </div>
     </header>
 
-    ${section('profile', 'Profile', html`<p class="cv-profile">${career.profile}</p>`)}
+    ${section('profile', 'Profile', html`<ul class="cv-profile">${[].concat(career.profile).map((line) => html`<li>${line}</li>`)}</ul>`)}
     ${section('experience', 'Experience', career.experience.map(job))}
     ${section('projects', 'Selected projects', projects.map((p) => project(ctx, p)))}
     ${section('skills', 'Skills', html`<dl class="skills">${career.skills.map((g) => html`<div class="skill-row"><dt>${g.group}</dt><dd>${techList(g.items, g.group)}</dd></div>`)}</dl>`)}
