@@ -33,6 +33,7 @@ export function validate({ site, projects, career }, root) {
   need(site, ['siteUrl', 'lang', 'name', 'role', 'intro', 'email', 'about', 'socials', 'portrait', 'seo'], 'site.json');
   try { new URL(site.siteUrl); } catch { err('site.json', `siteUrl is not a valid URL: "${site.siteUrl}"`); }
   checkImage(site.portrait, 'site.json portrait');
+  need(site.seo, ['title', 'description', 'experience', 'ogImage'], 'site.json seo');
   checkFile(site.seo?.ogImage, 'site.json seo.ogImage');
   (site.socials || []).forEach((s, i) => {
     const where = `site.json socials[${i}]`;

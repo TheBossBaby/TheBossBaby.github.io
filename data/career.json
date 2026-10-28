@@ -1,5 +1,5 @@
 {
-  "profile": "Game engine programmer with 7 years of experience in C++, Unreal Engine and Unity, focused on performance profiling, optimization tooling and engine plugins. Built Unity and Unreal Engine plugins and a plug-and-play optimization toolset for an upcoming Samsung flagship device, profiled games for performance bottlenecks with RenderDoc and Nsight Graphics, and shipped mobile and Apple Vision Pro work. Experienced in OpenGL and Vulkan, and in explaining complex technical topics to cross-functional teams.",
+  "profile": "Game engine programmer with 7+ years in game development, including 4+ in Unreal Engine and C++, focused on performance profiling, optimization tooling and engine plugins. Built Unity and Unreal Engine plugins and a plug-and-play optimization toolset for an upcoming Samsung flagship device, profiled games for performance bottlenecks with RenderDoc and Nsight Graphics, and shipped mobile and Apple Vision Pro work. Experienced in OpenGL and Vulkan, and in explaining complex technical topics to cross-functional teams.",
   "coreSkills": ["C++", "Unreal Engine 5", "Unity", "Vulkan", "OpenGL", "GLSL", "PS5 (AGC, PSSL)", "ECS", "Multithreading", "RenderDoc", "Nsight Graphics"],
   "skills": [
     { "group": "Languages", "items": ["C++", "C#", "Lua"] },

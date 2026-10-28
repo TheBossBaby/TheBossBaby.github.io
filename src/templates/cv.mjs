@@ -45,7 +45,7 @@ export function renderCv(ctx) {
   return layout(ctx, {
     path: '/cv/',
     title: `CV | ${site.name}, ${site.role}`,
-    description: `Full CV of ${site.name}: ${career.experience.map((j) => j.org).join(', ')}. ${site.role} with 7 years in C++, Unreal Engine, Unity, Vulkan and OpenGL.`.slice(0, 300),
+    description: `CV of ${site.name}, ${site.role}: ${site.seo.experience}. ${career.experience.map((j) => j.org).join(', ')}.`.slice(0, 300),
     ogType: 'profile',
     jsonLd: cvJsonLd(ctx),
     bodyClass: 'page-cv',
