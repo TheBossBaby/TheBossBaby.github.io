@@ -5,7 +5,7 @@
     "shortTitle": "Project V",
     "status": "wip",
     "featured": true,
-    "updated": "2026-11-01",
+    "updated": "2026-11-05",
     "updateNote": "Work in progress, updated after every PR.",
     "year": "2026",
     "category": "Game engine",
@@ -20,6 +20,7 @@
     "highlightsTitle": "Working now",
     "highlights": [
       "FBX meshes loaded from disk and uploaded to the GPU",
+      "Meshes staged into device-local memory, with a direct-write path for unified-memory GPUs",
       "Depth testing with a swapchain-sized depth attachment",
       "Pipeline cache keyed on shader pairs",
       "ECS rotate system",
@@ -28,11 +29,9 @@
       "Frames in flight with fence and semaphore synchronisation"
     ],
     "knownIssues": [
-      "Vertex and index buffers are host-visible and not yet staged into device-local memory.",
       "Swapchain resize isn't handled, so the depth image and framebuffers stay at their original size."
     ],
     "roadmap": [
-      "Staging buffers",
       "Descriptor sets",
       "Skybox",
       "Compute pipeline that ray-marches light paths through curved spacetime to render the wormhole's gravitational lensing"
