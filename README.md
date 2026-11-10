@@ -31,6 +31,7 @@ src/templates/        PRESENTATION: HTML generated from data
   home.mjs            home page sections
   project.mjs         project detail page and 404
   cv.mjs              full CV page at /cv/ (prints to PDF)
+  case-study.mjs      professional case study pages at /case-studies/<slug>/
   components.mjs      cards, badges, images, buttons
   seo.mjs             schema.org JSON-LD
   icons.mjs           inline SVG icons
@@ -48,15 +49,19 @@ PORTFOLIO_UPDATE.md   how to update Project V after each engine PR
 
 ## Common edits
 
-**Home page vs CV page.** The home page stays short on purpose and follows the order a hiring manager reads in:
+**Home page vs CV page.** The home page is visual first: the work and the numbers come before any long text. Top to bottom:
 
-1. **Professional work** shows one card per role that has an `impact` list in `career.json`: the role, its `summary`, its headline numbers (`impact`: `{ value, label }`) and its `stack`. Above the cards, a dated career path lists every role and education entry that has a `path` (`{ org, label }`), newest first, so gaps such as the MSc year are explained. A role's optional `context` (for example "After MSc") shows as a tag on its card and on the CV.
-2. **Personal projects** shows `projects.json`, then achievements whose `kind` is `"personal"`. Professional achievements, such as the patent application, belong in a role's `impact`.
-3. **About** shows the two `about` paragraphs from `site.json`, the `coreSkills` row and education.
+1. **Hero** shows `name`, `role` and the one-line `headline` from `site.json`, then a "Shipped at" row naming every role in `career.json` that has an `impact` list.
+2. **Highlights** shows the `stats` in `site.json` as big numbers: `{ value, label, context, href }`. `context` says where it happened. The optional `href` is a site path, such as a case study or project page, that the number links to.
+3. **Projects** is a video reel of `projects.json`. The featured project gets the large tile. Each tile plays its 480p clip, muted, while it is on screen, and shows the poster frame when the visitor prefers reduced motion.
+4. **Experience** shows one card per role that has an `impact` list in `career.json`: the role, its dates and its headline numbers (`impact`: `{ value, label }`). Above the cards, a dated career path lists every role and education entry that has a `path` (`{ org, label }`), newest first, so gaps such as the MSc year are explained. A role's optional `context` (for example "After MSc") shows as a tag on its card and on the CV. A role's optional `caseStudy` gets its own page at `/case-studies/<slug>/`, linked from its card: `slug`, `title`, `summary`, `metrics`, an optional to-scale `size` diagram (`before`, `after`, `ratio`, `shipped`, `onDemand`), `stack`, then `challenge`, `insight`, `approach` and `results`.
+5. **About** shows the two `about` paragraphs from `site.json`, the `coreSkills` row, education, and achievements whose `kind` is `"personal"`. Professional achievements, such as the patent application, belong in a role's `impact`.
+
+Each section's eyebrow, title and lede are in `sections` in `site.json`.
 
 Everything else in `career.json` (`profile`, every bullet in `points` and `groups`, all skill groups, all achievements) appears only on `/cv/`. That page has a "Save as PDF" button that uses a print stylesheet tuned for A4.
 
-**Add a project.** Add an object to `data/projects.json`. Copy an existing entry as a template. The order in the file is the order on the page. Exactly one project can have `"featured": true`; it gets the large card at the top.
+**Add a project.** Add an object to `data/projects.json`. Copy an existing entry as a template. The order in the file is the order on the page. Exactly one project can have `"featured": true`; it gets the large tile at the start of the reel.
 
 | Field | Required | Notes |
 | --- | --- | --- |
@@ -71,7 +76,7 @@ Everything else in `career.json` (`profile`, every bullet in `points` and `group
 | `tech`, `platforms` | tech | Arrays of strings. |
 | `image` | yes | `src`, `srcSmall`, `width`, `height`, `alt`. |
 | `gallery` | no | Images with `title` and `caption`. |
-| `video` | no | Self-hosted MP4 demo: `src`, `srcSmall`, `poster`, `width`, `height`, `duration`, `uploadDate`, `caption`, and optional `cropTop`. |
+| `video` | no | Self-hosted MP4 demo: `src`, `srcSmall`, `poster`, `width`, `height`, `duration`, `uploadDate`, `caption`, and optional `cropTop` and `captionBand`. |
 | `metrics` | no | Headline numbers: `[{ "value": "42%", "label": "fewer draw calls" }]`. |
 | `youtube` | no | YouTube video ID (11 characters), used only when there is no `video`. |
 | `links` | no | `{ "label", "url", "icon" }`. Icon names are in `src/templates/icons.mjs`. |
@@ -91,7 +96,7 @@ ffmpeg -i capture.mp4 -vf scale=-2:480 -c:v libx264 -crf 26 -preset slow -pix_fm
 ffmpeg -i capture.mp4 -frames:v 1 poster.png   # then convert to assets/img/projects/name-poster.webp
 ```
 
-The project page plays the full video with controls. Cards play the 480p preview on hover. If a capture includes a window title bar, set `cropTop` to its height in pixels and the player hides it.
+The project page plays the full video with controls. The home reel plays the 480p clip while it is on screen, and cards on project pages play it on hover. If a capture includes a window title bar, set `cropTop` to its height in pixels and the player hides it. If a clip has titles burned into its top or bottom edge, set `captionBand` to `{ "edge": "top", "height": 270 }` (or `"bottom"`, height in source pixels) and the reel crops that band out; the project page still shows the whole frame.
 
 **Add a contact form.** Set `contact.formAction` in `data/site.json` to a form endpoint such as Formspree. The form appears automatically. Leave it empty for the email-only layout.
 

@@ -166,6 +166,7 @@
       "height": 1080,
       "duration": "PT12S",
       "uploadDate": "2024-02-17",
+      "captionBand": { "edge": "top", "height": 270 },
       "caption": "Fly-through of the PBR scene with a lit, reflective sphere over displaced terrain."
     },
     "gallery": [],
@@ -215,6 +216,7 @@
       "height": 1080,
       "duration": "PT18S",
       "uploadDate": "2024-02-17",
+      "captionBand": { "edge": "bottom", "height": 280 },
       "caption": "The space scene, then the stylized forest rendered with GPU instancing."
     },
     "gallery": [],

@@ -34,6 +34,14 @@ export function validate({ site, projects, career }, root) {
   try { new URL(site.siteUrl); } catch { err('site.json', `siteUrl is not a valid URL: "${site.siteUrl}"`); }
   checkImage(site.portrait, 'site.json portrait');
   need(site.seo, ['title', 'description', 'experience', 'ogImage'], 'site.json seo');
+  need(site, ['headline', 'stats', 'sections'], 'site.json');
+  (site.stats || []).forEach((s, i) => {
+    need(s, ['value', 'label'], `site.json stats[${i}]`);
+    if (s.href && !s.href.startsWith('/')) err(`site.json stats[${i}]`, `href must be a site path starting with "/" (got "${s.href}")`);
+  });
+  need(site.sections, ['projects', 'work', 'about', 'testimonials'], 'site.json sections');
+  ['projects', 'about', 'testimonials'].forEach((k) => need(site.sections?.[k], ['eyebrow', 'title'], `site.json sections.${k}`));
+  need(site.sections?.work, ['eyebrow'], 'site.json sections.work');
   checkFile(site.seo?.ogImage, 'site.json seo.ogImage');
   (site.socials || []).forEach((s, i) => {
     const where = `site.json socials[${i}]`;
@@ -68,6 +76,10 @@ export function validate({ site, projects, career }, root) {
         if (p.video.duration && !/^PT(\d+H)?(\d+M)?(\d+S)?$/.test(p.video.duration)) err(w, 'duration must be ISO 8601, e.g. "PT12S"');
         if (p.video.uploadDate && !DATE.test(p.video.uploadDate)) err(w, 'uploadDate must be YYYY-MM-DD');
         if (p.video.cropTop && !(p.video.cropTop > 0 && p.video.cropTop < p.video.height)) err(w, 'cropTop must be between 0 and height');
+        const band = p.video.captionBand;
+        if (band && (!['top', 'bottom'].includes(band.edge) || !(band.height > 0 && band.height < p.video.height / 2))) {
+          err(w, 'captionBand needs edge "top" or "bottom" and a height between 0 and half the video height');
+        }
       }
     }
     if (p.image) checkImage(p.image, `${where} image`);
@@ -87,7 +99,11 @@ export function validate({ site, projects, career }, root) {
     need(j, ['role', 'org', 'period', 'summary', 'headline'], where);
     if (!j.points?.length && !j.groups?.length) err(where, 'needs "points" or "groups"');
     (j.impact || []).forEach((m, k) => need(m, ['value', 'label'], `${where} impact[${k}]`));
-    if (j.caseStudy) need(j.caseStudy, ['title', 'challenge', 'approach', 'results'], `${where} caseStudy`);
+    if (j.caseStudy) {
+      need(j.caseStudy, ['slug', 'title', 'summary', 'challenge', 'approach', 'results'], `${where} caseStudy`);
+      if (j.caseStudy.slug && !SLUG.test(j.caseStudy.slug)) err(`${where} caseStudy`, 'slug must be lowercase-kebab-case');
+      if (j.caseStudy.size) need(j.caseStudy.size, ['before', 'after', 'ratio', 'shipped', 'onDemand'], `${where} caseStudy.size`);
+    }
     if (j.path) { need(j.path, ['org', 'label'], `${where} path`); need(j, ['start'], where); }
   });
   (career.education || []).forEach((e, i) => {

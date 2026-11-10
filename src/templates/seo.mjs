@@ -51,6 +51,37 @@ export function homeJsonLd(ctx) {
   };
 }
 
+export function caseStudyJsonLd(ctx, job) {
+  const cs = job.caseStudy;
+  const url = ctx.abs(ctx.caseStudyPath(cs));
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'TechArticle',
+        '@id': `${url}#article`,
+        headline: cs.title,
+        description: cs.summary,
+        url,
+        image: ctx.abs(ctx.site.seo.ogImage),
+        keywords: (cs.stack || []).join(', '),
+        about: { '@type': 'Organization', name: job.org },
+        author: { '@id': personId(ctx) },
+        isPartOf: { '@id': websiteId(ctx) },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: ctx.abs('/') },
+          { '@type': 'ListItem', position: 2, name: 'Experience', item: `${ctx.abs('/')}#work` },
+          { '@type': 'ListItem', position: 3, name: cs.title, item: url },
+        ],
+      },
+      person(ctx),
+    ],
+  };
+}
+
 export function cvJsonLd(ctx) {
   const url = ctx.abs('/cv/');
   return {
@@ -118,7 +149,7 @@ export function projectJsonLd(ctx, project) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: ctx.abs('/') },
-          { '@type': 'ListItem', position: 2, name: 'Work', item: `${ctx.abs('/')}#work` },
+          { '@type': 'ListItem', position: 2, name: 'Projects', item: `${ctx.abs('/')}#projects` },
           { '@type': 'ListItem', position: 3, name: project.shortTitle || project.title, item: url },
         ],
       },

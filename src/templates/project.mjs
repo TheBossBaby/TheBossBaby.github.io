@@ -107,7 +107,7 @@ export function renderProject(ctx, p, index) {
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="${ctx.url('/')}">Home</a></li>
-        <li><a href="${ctx.url('/')}#work">Work</a></li>
+        <li><a href="${ctx.url('/')}#projects">Projects</a></li>
         <li><span aria-current="page">${name}</span></li>
       </ol>
     </nav>
@@ -155,7 +155,7 @@ export function renderNotFound(ctx) {
     <p class="project-tagline">The page you were looking for doesn't exist or has moved.</p>
     <div class="actions">
       <a class="btn btn-primary" href="${ctx.url('/')}">${icon('arrowLeft', { size: 18 })}<span>Back to home</span></a>
-      <a class="btn btn-ghost" href="${ctx.url('/')}#work"><span>See my work</span></a>
+      <a class="btn btn-ghost" href="${ctx.url('/')}#projects"><span>See my work</span></a>
     </div>
   </div>
 </section>`,

@@ -1,12 +1,17 @@
-import { html } from '../lib/html.mjs';
+import { html, cx } from '../lib/html.mjs';
 import { icon } from './icons.mjs';
 import { layout } from './layout.mjs';
 import { homeJsonLd } from './seo.mjs';
-import { image, statusBadge, techList, linkButton, formatDate, sectionHead, projectCard, videoPlayer } from './components.mjs';
+import { image, statusBadge, techList, formatDate, sectionHead } from './components.mjs';
+
+// Visual first, text later. The hero names the role and where it was shipped,
+// a band of headline numbers follows, then the project reel. The detail lives
+// on the project pages, the case study and /cv/.
 
 function hero(ctx) {
-  const { site } = ctx;
+  const { site, career } = ctx;
   const featured = ctx.projects.find((p) => p.featured);
+  const orgs = career.experience.filter((j) => j.impact?.length).map((j) => j.org);
   return html`<section class="hero" aria-labelledby="hero-title">
   <canvas class="hero-canvas" data-hero-canvas aria-hidden="true"></canvas>
   <div class="hero-scrim" aria-hidden="true"></div>
@@ -14,15 +19,17 @@ function hero(ctx) {
     <p class="availability"><span class="pulse" aria-hidden="true"></span>${site.availability}</p>
     <h1 id="hero-title" class="hero-title">${site.name}</h1>
     <p class="hero-role">${site.role}</p>
-    <ul class="hero-intro">${site.intro.map((line) => html`<li>${line}</li>`)}</ul>
-    <ul class="hero-focus" aria-label="Core stack">${site.focus.map((f) => html`<li>${f}</li>`)}</ul>
+    <p class="hero-headline">${site.headline}</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#work"><span>See my work</span>${icon('arrowRight', { size: 18 })}</a>
+      <a class="btn btn-primary" href="#projects"><span>See my work</span>${icon('arrowRight', { size: 18 })}</a>
       <a class="btn btn-ghost" href="#contact">${icon('mail', { size: 18 })}<span>Get in touch</span></a>
     </div>
-    <dl class="stats">
-      ${site.stats.map((s) => html`<div class="stat"><dt>${s.label}</dt><dd>${s.value}</dd></div>`)}
-    </dl>
+    ${orgs.length
+      ? html`<div class="hero-orgs">
+      <p class="hero-orgs-label mono">Shipped at</p>
+      <ul>${orgs.map((o) => html`<li>${o}</li>`)}</ul>
+    </div>`
+      : ''}
   </div>
   ${featured
     ? html`<p class="hero-caption mono" aria-hidden="true">Live WebGL sketch: a wormhole onto another galaxy · the end goal of <a href="${ctx.url(ctx.projectPath(featured))}" tabindex="-1">${featured.shortTitle || featured.title}</a></p>`
@@ -30,69 +37,86 @@ function hero(ctx) {
 </section>`;
 }
 
-function featuredProject(ctx, p) {
+// Headline numbers, each with where it happened. Ones with a story link to it.
+function statBand(ctx) {
+  const { stats } = ctx.site;
+  if (!stats?.length) return '';
+  const body = (s) => html`<span class="stat-value">${s.value}</span>
+        <span class="stat-label">${s.label}</span>
+        ${s.context ? html`<span class="stat-context mono">${s.context}${s.href ? icon('arrowUpRight', { size: 14 }) : ''}</span>` : ''}`;
+  return html`<section class="stat-band" aria-labelledby="stats-title">
+  <div class="container">
+    <h2 id="stats-title" class="sr-only">Highlights</h2>
+    <ul class="stat-list">
+      ${stats.map((s) => html`<li class="${cx('stat-item', s.href && 'has-link')}">${s.href ? html`<a href="${ctx.url(s.href)}">${body(s)}</a>` : body(s)}</li>`)}
+    </ul>
+  </div>
+</section>`;
+}
+
+// A reel tile: the clip plays muted while on screen (main.js), with the title
+// over it. The first tile is the featured project and gets the most space.
+function reelTile(ctx, p, lead) {
   const href = ctx.url(ctx.projectPath(p));
-  const next = p.roadmap?.[0];
-  return html`<article class="featured" aria-labelledby="featured-title">
-    <div class="featured-media">
-      ${p.video
-        ? videoPlayer(ctx, p.video, { controls: false, label: `${p.title}: video demo` })
-        : image(ctx, p.image, { sizes: '(min-width: 1100px) 620px, 100vw' })}
-      <span class="featured-flag mono">Currently building</span>
+  const next = p.status === 'wip' ? p.roadmap?.[0] : '';
+  const v = p.video;
+  const poster = ctx.url(lead ? p.image.src : p.image.srcSmall || p.image.src);
+  // Clips with titles burned into one edge are cropped in the reel, where the
+  // tile already has a title. The project page still shows the full frame.
+  const band = v?.captionBand;
+  const crop = band ? html` style="--crop-${band.edge}: ${(band.height / v.height).toFixed(3)}"` : '';
+  const media = v
+    ? html`<div class="tile-media" aria-hidden="true"${crop}>
+        <video muted loop playsinline preload="none" poster="${poster}" tabindex="-1" data-autoplay>
+          ${lead && v.srcSmall ? html`<source src="${ctx.url(v.srcSmall)}" type="video/mp4" media="(max-width: 700px)">` : ''}
+          <source src="${ctx.url(lead ? v.src : v.srcSmall || v.src)}" type="video/mp4">
+        </video>
+      </div>`
+    : html`<div class="tile-media">${image(ctx, p.image, { sizes: lead ? '(min-width: 760px) 60vw, 100vw' : '(min-width: 760px) 45vw, 100vw' })}</div>`;
+  return html`<article class="${cx('tile', lead && 'tile-lead')}">
+    ${media}
+    <div class="tile-top">
+      ${p.status === 'wip'
+        ? html`${statusBadge(p.status)}${p.updated ? html`<span class="tile-chip mono">Updated ${formatDate(p.updated, ctx.site.lang)}</span>` : ''}`
+        : html`<span class="tile-chip mono">${p.category}</span>`}
     </div>
-    <div class="featured-body">
-      <p class="card-meta">${statusBadge(p.status)}${p.updated ? html`<span class="mono">Updated ${formatDate(p.updated, ctx.site.lang)}</span>` : ''}</p>
-      <h3 id="featured-title" class="featured-title"><a href="${href}">${p.title}</a></h3>
-      <p class="featured-tagline">${p.tagline}</p>
-      <p class="featured-summary">${p.summary}</p>
-      <ul class="progress-line">
-        ${p.highlights?.length ? html`<li>${icon('check', { size: 16 })}<span><strong>${p.highlights.length}</strong> features working</span></li>` : ''}
-        ${next ? html`<li>${icon('arrowRight', { size: 16 })}<span>Next up: <strong>${next}</strong></span></li>` : ''}
-      </ul>
-      ${techList(p.tech.slice(0, 5))}
-      <div class="actions">
-        <a class="btn btn-primary" href="${href}"><span>Read the build log</span>${icon('arrowRight', { size: 18 })}</a>
-        ${p.links.slice(0, 1).map((l) => linkButton(l))}
-      </div>
+    <div class="tile-body">
+      <h3 class="tile-title"><a class="tile-link" href="${href}">${lead ? p.title : p.shortTitle || p.title}</a></h3>
+      <p class="tile-text">${p.tagline}</p>
+      ${next ? html`<p class="tile-next mono">${icon('arrowRight', { size: 14 })}Next up: ${next}</p>` : ''}
     </div>
+    <span class="tile-arrow" aria-hidden="true">${icon('arrowUpRight', { size: 20 })}</span>
   </article>`;
 }
 
-// Professional work comes first: it is what a hiring manager weighs most.
-// Client work is under NDA, so each card shows the role and its measured outcomes.
-function professionalCard(j) {
-  return html`<article class="${j.current ? 'pro-card is-current' : 'pro-card'}">
+function projects(ctx) {
+  const copy = ctx.site.sections.projects;
+  const list = [...ctx.projects].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+  return html`<section id="projects" class="section" aria-labelledby="projects-title">
+  <div class="container">
+    ${sectionHead({ id: 'projects', ...copy })}
+    <div class="reel">${list.map((p, i) => reelTile(ctx, p, i === 0))}</div>
+  </div>
+</section>`;
+}
+
+// Client work is under NDA, so each card leads with its measured outcomes.
+function professionalCard(ctx, j) {
+  return html`<article class="${cx('pro-card', j.current && 'is-current')}">
     <header class="pro-head">
       <p class="pro-org">${j.org}${j.current ? html`<span class="badge badge-complete">Current</span>` : ''}${j.context ? html`<span class="badge badge-note">${j.context}</span>` : ''}</p>
       <h3 class="pro-role">${j.role}</h3>
-      <p class="pro-when mono">${j.period}${j.location ? ` · ${j.location}` : ''}</p>
+      <p class="pro-when mono">${j.period}</p>
     </header>
-    <p class="pro-summary">${j.summary}</p>
     <dl class="pro-impact">
       ${j.impact.map((m) => html`<div><dt>${m.label}</dt><dd>${m.value}</dd></div>`)}
     </dl>
-    ${j.caseStudy ? caseStudy(j.caseStudy) : ''}
-    ${j.stack?.length ? techList(j.stack, `${j.org} stack`) : ''}
+    ${j.caseStudy ? html`<a class="pro-case-link" href="${ctx.url(ctx.caseStudyPath(j.caseStudy))}"><span><span class="pro-case-kicker">Case study</span>${j.caseStudy.title}</span>${icon('arrowRight', { size: 16 })}</a>` : ''}
   </article>`;
 }
 
-// The story behind a headline number, collapsed by default to keep the card short.
-function caseStudy(cs) {
-  return html`<details class="pro-case">
-    <summary>${cs.title}</summary>
-    <div class="pro-case-body">
-      <p><strong>Challenge.</strong> ${cs.challenge}</p>
-      ${cs.insight ? html`<p><strong>Insight.</strong> ${cs.insight}</p>` : ''}
-      <h4>Approach</h4>
-      <ul class="bullets">${cs.approach.map((a) => html`<li>${a}</li>`)}</ul>
-      <h4>Results</h4>
-      <ul class="bullets">${cs.results.map((r) => html`<li>${r}</li>`)}</ul>
-    </div>
-  </details>`;
-}
-
 // One dated line from now back to the first job, study included, so the order of
-// events (industry, MSc, then Tencent) is clear before the detail cards.
+// events (industry, MSc, then Tencent) is clear before the cards.
 function careerPath(career) {
   const year = (d) => (d ? String(d).slice(0, 4) : '');
   const steps = [
@@ -101,7 +125,7 @@ function careerPath(career) {
   ].sort((a, b) => String(b.start).localeCompare(String(a.start))); // newest first, like the cards
   if (steps.length < 2) return '';
   return html`<ol class="career-path" aria-label="Career path" style="--steps: ${steps.length}">
-    ${steps.map((s) => html`<li class="${['path-step', s.current && 'is-current', s.study && 'is-study'].filter(Boolean).join(' ')}">
+    ${steps.map((s) => html`<li class="${cx('path-step', s.current && 'is-current', s.study && 'is-study')}">
       <span class="path-years mono">${year(s.start)}–${s.current ? 'now' : year(s.end)}</span>
       <span class="path-org">${s.org}</span>
       <span class="path-label">${s.label}</span>
@@ -110,43 +134,25 @@ function careerPath(career) {
 }
 
 function professional(ctx) {
-  const { career } = ctx;
+  const { career, site } = ctx;
   const featured = career.experience.filter((j) => j.impact?.length);
-  return html`<section id="work" class="section" aria-labelledby="work-title">
+  const orgs = featured.map((j) => j.org).join(', ').replace(/, ([^,]*)$/, ' and $1');
+  return html`<section id="work" class="section section-alt" aria-labelledby="work-title">
   <div class="container">
-    ${sectionHead({ id: 'work', eyebrow: 'Professional work', title: `Shipped at ${featured.map((j) => j.org).join(', ').replace(/, ([^,]*)$/, ' and $1')}`, lede: 'Performance, rendering and engine work on commercial projects. The code is under NDA, so these are the measured outcomes.' })}
+    ${sectionHead({ id: 'work', eyebrow: site.sections.work.eyebrow, title: `Shipped at ${orgs}`, lede: site.sections.work.lede })}
     ${careerPath(career)}
-    <div class="pro-grid">${featured.map(professionalCard)}</div>
+    <div class="pro-grid">${featured.map((j) => professionalCard(ctx, j))}</div>
     <div class="actions">
-      <a class="btn btn-primary" href="${ctx.url('/cv/')}"><span>Every role in detail on the CV</span>${icon('arrowRight', { size: 18 })}</a>
+      <a class="btn btn-ghost" href="${ctx.url('/cv/')}"><span>Every role in detail on the CV</span>${icon('arrowRight', { size: 18 })}</a>
     </div>
-  </div>
-</section>`;
-}
-
-function personal(ctx) {
-  const featured = ctx.projects.find((p) => p.featured);
-  const rest = ctx.projects.filter((p) => p !== featured);
-  const awards = ctx.career.achievements.filter((a) => a.kind === 'personal');
-  return html`<section id="projects" class="section section-alt" aria-labelledby="projects-title">
-  <div class="container">
-    ${sectionHead({ id: 'projects', eyebrow: 'Personal projects', title: 'Engines and renderers I build outside work', lede: 'C++ on Vulkan, OpenGL and the PS5 graphics API, using focused libraries such as GLM, EnTT, GLFW and Assimp rather than a commercial engine. Some began as MSc coursework at Newcastle University.' })}
-    ${featured ? featuredProject(ctx, featured) : ''}
-    <div class="grid">
-      ${rest.map((p) => projectCard(ctx, p))}
-    </div>
-    ${awards.length
-      ? html`<div class="awards">
-      <h3 class="mini-head">Personal achievements</h3>
-      <ul class="awards-list">${awards.map((a) => html`<li>${icon('award', { size: 20 })}<span><strong>${a.title}</strong><span>${a.detail}</span></span></li>`)}</ul>
-    </div>`
-      : ''}
   </div>
 </section>`;
 }
 
 function about(ctx) {
   const { site, career } = ctx;
+  const awards = career.achievements.filter((a) => a.kind === 'personal');
+  const fact = (title, detail, glyph) => html`<li>${glyph ? icon(glyph, { size: 18 }) : html`<span class="fact-dot" aria-hidden="true"></span>`}<span><strong>${title}</strong><span>${detail}</span></span></li>`;
   return html`<section id="about" class="section" aria-labelledby="about-title">
   <div class="container about">
     <figure class="portrait">
@@ -154,14 +160,21 @@ function about(ctx) {
       <figcaption class="mono">${icon('pin', { size: 14 })}${site.location}</figcaption>
     </figure>
     <div class="about-body">
-      ${sectionHead({ id: 'about', eyebrow: 'About', title: 'From Unity freelancing to Samsung, Tencent and my own Vulkan engine' })}
+      ${sectionHead({ id: 'about', ...site.sections.about })}
       <div class="prose">${site.about.map((para) => html`<p>${para}</p>`)}</div>
       <h3 class="mini-head">Core skills</h3>
       ${techList(career.coreSkills, 'Core skills')}
-      <h3 class="mini-head">Education</h3>
-      <ul class="plain education">${career.education.map((e) => html`<li><strong>${e.course}</strong><span>${e.org}${e.period ? ` · ${e.period}` : ''}</span></li>`)}</ul>
-      <div class="actions">
-        <a class="btn btn-ghost" href="${ctx.url('/cv/')}"><span>Full CV and skills</span>${icon('arrowRight', { size: 18 })}</a>
+      <div class="facts">
+        <div>
+          <h3 class="mini-head">Education</h3>
+          <ul class="facts-list">${career.education.map((e) => fact(e.course, [e.org, e.period].filter(Boolean).join(' · ')))}</ul>
+        </div>
+        ${awards.length
+          ? html`<div>
+          <h3 class="mini-head">Awards</h3>
+          <ul class="facts-list">${awards.map((a) => fact(a.title, a.detail, 'award'))}</ul>
+        </div>`
+          : ''}
       </div>
     </div>
   </div>
@@ -173,7 +186,7 @@ function testimonials(ctx) {
   if (!list.length) return '';
   return html`<section class="section section-alt" aria-labelledby="testimonials-title">
   <div class="container">
-    ${sectionHead({ id: 'testimonials', eyebrow: 'Recommendation', title: 'What my manager said' })}
+    ${sectionHead({ id: 'testimonials', ...ctx.site.sections.testimonials })}
     ${list.map((t) => html`<figure class="testimonial">
       <blockquote>
         <p class="pull">“${t.pull}”</p>
@@ -229,7 +242,7 @@ export function renderHome(ctx) {
     description: site.seo.description,
     jsonLd: homeJsonLd(ctx),
     bodyClass: 'page-home',
-    main: html`${hero(ctx)}${professional(ctx)}${personal(ctx)}${about(ctx)}${testimonials(ctx)}${contact(ctx)}`,
+    main: html`${hero(ctx)}${statBand(ctx)}${projects(ctx)}${professional(ctx)}${about(ctx)}${testimonials(ctx)}${contact(ctx)}`,
     scripts: html`<script src="${ctx.asset('js/hero.js')}" defer></script>`,
   });
 }

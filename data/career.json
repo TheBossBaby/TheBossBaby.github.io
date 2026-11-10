@@ -74,7 +74,21 @@
         { "value": "3", "label": "engine modules built in C++: input, debugger and profiler" }
       ],
       "caseStudy": {
+        "slug": "apk-1gb-to-45mb",
         "title": "How the APK went from 1 GB to 45 MB",
+        "summary": "Cutting an Unreal Engine Android game's APK from 1 GB to 45 MB by streaming its content as PAK files mounted at runtime.",
+        "metrics": [
+          { "value": "1 GB → 45 MB", "label": "APK size" },
+          { "value": "95%", "label": "smaller initial download" }
+        ],
+        "size": {
+          "before": "1 GB",
+          "after": "45 MB",
+          "ratio": 0.045,
+          "shipped": ["Main menu", "Downloader module"],
+          "onDemand": ["Gameplay", "Lobby", "Shop", "Levels"]
+        },
+        "stack": ["Unreal Engine", "C++", "PAK files", "Soft references", "Async loading", "Android"],
         "challenge": "The APK was too large to upload to the Play Store, and load times were long.",
         "insight": "PUBG Mobile ships multi-gigabyte maps from an APK of around 83 MB, so its content had to be downloaded on demand. I set out to do the same.",
         "approach": [
