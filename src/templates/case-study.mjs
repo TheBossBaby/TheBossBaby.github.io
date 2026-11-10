@@ -50,7 +50,7 @@ export function renderCaseStudy(ctx, job) {
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href="${ctx.url('/')}">Home</a></li>
-        <li><a href="${ctx.url('/')}#work">Work</a></li>
+        <li><a href="${ctx.url('/')}#work">Experience</a></li>
         <li><span aria-current="page">Case study</span></li>
       </ol>
     </nav>
@@ -81,7 +81,7 @@ export function renderCaseStudy(ctx, job) {
     <nav class="next-project" aria-label="More">
       <a href="${ctx.url('/')}#work">
         <span class="mono muted">Back to</span>
-        <span class="next-title">Professional work${icon('arrowRight', { size: 22 })}</span>
+        <span class="next-title">Experience${icon('arrowRight', { size: 22 })}</span>
       </a>
     </nav>
   </div>

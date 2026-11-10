@@ -3,8 +3,8 @@ import { icon } from './icons.mjs';
 import { analyticsScripts, consentBanner, consentFooterLink } from './analytics.mjs';
 
 const NAV = [
-  { label: 'Work', hash: 'work' },
   { label: 'Projects', hash: 'projects' },
+  { label: 'Experience', hash: 'work' },
   { label: 'About', hash: 'about' },
   { label: 'Contact', hash: 'contact' },
   { label: 'CV', href: '/cv/' },

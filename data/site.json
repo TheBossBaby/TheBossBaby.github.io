@@ -14,12 +14,20 @@
     "GPU profiling and rendering on PC, PS5, Mobile and Vision Pro.",
     "Building a Vulkan 1.3 engine in my own time."
   ],
-  "focus": ["C++", "Unreal Engine 5", "Vulkan", "OpenGL", "PS5 (AGC)"],
+  "headline": "Rendering, GPU profiling and engine work in C++, Unreal Engine 5 and Vulkan.",
   "stats": [
-    { "value": "7+", "label": "years in game development" },
-    { "value": "40%", "label": "less VRAM on Apple Vision Pro at Tencent" },
-    { "value": "42%", "label": "fewer draw calls in Project T on PS5" }
+    { "value": "7+", "label": "years in game development", "context": "4+ in Unreal & C++" },
+    { "value": "40%", "label": "less VRAM on Apple Vision Pro", "context": "Tencent" },
+    { "value": "95%", "label": "smaller Android APK, 1 GB to 45 MB", "context": "Pole To Win", "href": "/case-studies/apk-1gb-to-45mb/" },
+    { "value": "32%", "label": "less inter-process bandwidth", "context": "Samsung" },
+    { "value": "42%", "label": "fewer draw calls on PS5", "context": "Project T", "href": "/projects/project-t/" }
   ],
+  "sections": {
+    "projects": { "eyebrow": "Projects", "title": "Engines and renderers I build", "lede": "C++ on Vulkan, OpenGL and the PS5 graphics API. Some began as MSc coursework." },
+    "work": { "eyebrow": "Experience", "lede": "The code is under NDA, so these are the measured outcomes." },
+    "about": { "eyebrow": "About", "title": "From Unity freelancing to Samsung, Tencent and my own Vulkan engine" },
+    "testimonials": { "eyebrow": "Recommendation", "title": "What my manager said" }
+  },
   "about": [
     "I started in Unity, freelancing for clients while still at college, then moved to Unreal Engine and C++ at Pole To Win, building engine modules and mentoring engineers new to Unreal.",
     "After an MSc in Computer Games Engineering with Distinction, I brought Unreal Engine 5 rendering to Apple Vision Pro at Tencent. I now build optimization tooling at Samsung, and spend my own time on a Vulkan engine."

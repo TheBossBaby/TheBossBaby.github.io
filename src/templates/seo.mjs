@@ -73,7 +73,7 @@ export function caseStudyJsonLd(ctx, job) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: ctx.abs('/') },
-          { '@type': 'ListItem', position: 2, name: 'Work', item: `${ctx.abs('/')}#work` },
+          { '@type': 'ListItem', position: 2, name: 'Experience', item: `${ctx.abs('/')}#work` },
           { '@type': 'ListItem', position: 3, name: cs.title, item: url },
         ],
       },
@@ -149,7 +149,7 @@ export function projectJsonLd(ctx, project) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: ctx.abs('/') },
-          { '@type': 'ListItem', position: 2, name: 'Work', item: `${ctx.abs('/')}#work` },
+          { '@type': 'ListItem', position: 2, name: 'Projects', item: `${ctx.abs('/')}#projects` },
           { '@type': 'ListItem', position: 3, name: project.shortTitle || project.title, item: url },
         ],
       },

@@ -111,7 +111,7 @@
   // Gentle reveal for content below the fold. Content already on screen is
   // never hidden, so there is no flash on load.
   if (!reduceMotion && 'IntersectionObserver' in window) {
-    const targets = document.querySelectorAll('.section-head, .featured, .card, .about > *, .timeline-item, .panel, .testimonial, .block, .social-card');
+    const targets = document.querySelectorAll('.section-head, .tile, .stat-item, .pro-card, .card, .about > *, .testimonial, .block, .social-card');
     const reveal = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
