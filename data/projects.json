@@ -5,7 +5,7 @@
     "shortTitle": "Project V",
     "status": "wip",
     "featured": true,
-    "updated": "2026-11-05",
+    "updated": "2026-11-17",
     "updateNote": "Work in progress, updated after every PR.",
     "year": "2026",
     "category": "Game engine",
@@ -25,14 +25,13 @@
       "Pipeline cache keyed on shader pairs",
       "ECS rotate system",
       "Perspective camera (left-handed, Z-up)",
-      "Per-object MVP matrices sent as push constants",
+      "Per-frame camera uniform buffer in a descriptor set, model matrix as a push constant",
       "Frames in flight with fence and semaphore synchronisation"
     ],
     "knownIssues": [
       "Swapchain resize isn't handled, so the depth image and framebuffers stay at their original size."
     ],
     "roadmap": [
-      "Descriptor sets",
       "Skybox",
       "Compute pipeline that ray-marches light paths through curved spacetime to render the wormhole's gravitational lensing"
     ],
@@ -52,24 +51,24 @@
       "height": 720,
       "duration": "PT4S",
       "uploadDate": "2026-11-01",
-      "caption": "Two cubes rotated by the ECS, each with its own push-constant MVP matrix, now depth-tested so near faces hide far ones."
+      "caption": "Two cubes rotated by the ECS, each with its own model matrix, depth-tested so near faces hide far ones."
     },
     "gallery": [
       {
         "title": "Frames in flight & draw loop",
-        "caption": "The CPU records frame N+1 while the GPU is still on frame N, with per-image render-finished semaphores and redundant pipeline binds skipped.",
+        "caption": "The CPU records frame N+1 while the GPU is still on frame N. Each frame in flight has its own camera uniform buffer and descriptor set, and only the model matrix is pushed per draw.",
         "src": "/assets/img/projects/project-v-frames.webp",
-        "width": 1273,
-        "height": 1300,
-        "alt": "C++ source for vulkanRenderer beginFrame, draw and endFrame showing fence waits, swapchain acquire, push constants and queue submit"
+        "width": 1208,
+        "height": 1354,
+        "alt": "C++ source for vulkanRenderer beginFrame, draw and endFrame showing the fence wait, camera uniform write, descriptor set bind, push constants and queue submit"
       },
       {
         "title": "Pipeline creation with RAII + builders",
-        "caption": "An API-agnostic pipeline description goes in and a Vulkan pipeline comes out, built from move-only RAII wrappers and validating builders.",
+        "caption": "An API-agnostic pipeline description goes in and a Vulkan pipeline comes out, with the camera descriptor set at set 0 and the model matrix as a push constant, all from move-only RAII wrappers and validating builders.",
         "src": "/assets/img/projects/project-v-pipeline.webp",
-        "width": 1209,
-        "height": 840,
-        "alt": "C++ source for vulkanRenderer createGraphicsPipeline using shader module, pipeline layout and graphics pipeline builders"
+        "width": 1188,
+        "height": 874,
+        "alt": "C++ source for vulkanRenderer createGraphicsPipeline using shader module, pipeline layout (descriptor set and push constant) and graphics pipeline builders"
       }
     ],
     "links": [
